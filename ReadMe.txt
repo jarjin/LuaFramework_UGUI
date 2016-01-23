@@ -14,6 +14,7 @@
 
 //-------------2016-01-23-------------
 (1)完善了Lua的字节码模式AppConst.LuaByteMode、Lua的AssetBundle模式AppConst.LuaBundleMode的交叉使用。
+(2)同步tolua #1.0.1版本。
 
 //-------------2016-01-18-------------
 (1)框架直接基于tolua#提供的luabundle功能，开关在AppConst.LuabundleMode。

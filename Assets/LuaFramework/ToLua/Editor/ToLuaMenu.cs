@@ -606,9 +606,9 @@ public static class ToLuaMenu
 
         string[] files = Directory.GetFiles("Assets/StreamingAssets/" + AppConst.LuaTempDir + dir, "*.lua.bytes");
         List<Object> list = new List<Object>();
-        string bundleName = "Lua.unity3d";
+        string bundleName = "Lua" + AppConst.ExtName;
         if (dir != null) {
-            bundleName = "Lua_" + dir.Replace('\\', '_') + ".unity3d";
+            bundleName = "Lua_" + dir.Replace('\\', '_') + AppConst.ExtName;
         } 
         for (int i = 0; i < files.Length; i++)
         {
@@ -796,7 +796,11 @@ public static class ToLuaMenu
             if (appendext) dest += ".bytes";
             string dir = Path.GetDirectoryName(dest);
             Directory.CreateDirectory(dir);
-            File.Copy(files[i], dest, true);
+            if (AppConst.LuaByteMode) {
+                Packager.EncodeLuaFile(files[i], dest, true);
+            } else {
+                File.Copy(files[i], dest, true);
+            }
         }        
     }
 

@@ -21,7 +21,7 @@ namespace LuaFramework {
         // Use this for initialization
         public LuaLoader() {
             instance = this;
-            beZip = AppConst.LuabundleMode;
+            beZip = AppConst.LuaBundleMode;
         }
 
         /// <summary>

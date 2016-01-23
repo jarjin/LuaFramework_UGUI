@@ -62,7 +62,7 @@ public class Packager {
         AssetDatabase.Refresh();
 
         maps.Clear();
-        if (AppConst.LuabundleMode) {
+        if (AppConst.LuaBundleMode) {
             HandleLuaBundle();
         } else {
             HandleLuaFile(isWin);
@@ -113,7 +113,7 @@ public class Packager {
             string path = "Assets" + dirs[i].Replace(Application.dataPath, "");
             AddBuildMap(name, "*.bytes", path);
         }
-        AddBuildMap("lua/lua.unity3d", "*.bytes", "Assets/" + AppConst.LuaTempDir);
+        AddBuildMap("lua/lua" + AppConst.ExtName, "*.bytes", "Assets/" + AppConst.LuaTempDir);
         AssetDatabase.Refresh();
     }
 
@@ -160,12 +160,12 @@ public class Packager {
                 if (File.Exists(newpath)) {
                     File.Delete(newpath);
                 }
-                if (AppConst.LuaEncode) {
-                    UpdateProgress(n++, files.Count, newpath);
+                if (AppConst.LuaByteMode) {
                     EncodeLuaFile(f, newpath, isWin);
                 } else {
                     File.Copy(f, newpath, true);
                 }
+                UpdateProgress(n++, files.Count, newpath);
             } 
         }
         EditorUtility.ClearProgressBar();
@@ -225,7 +225,7 @@ public class Packager {
         EditorUtility.DisplayProgressBar(title, desc, value);
     }
 
-    static void EncodeLuaFile(string srcFile, string outFile, bool isWin) {
+    public static void EncodeLuaFile(string srcFile, string outFile, bool isWin) {
         if (!srcFile.ToLower().EndsWith(".lua")) {
             File.Copy(srcFile, outFile, true);
             return;

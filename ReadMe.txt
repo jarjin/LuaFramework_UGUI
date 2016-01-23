@@ -13,4 +13,4 @@
 框架详细介绍 http://doc.ulua.org/default.asp?cateID=4
 
 //-------------2016-01-18-------------
-(1)基于tolua#提供的luabundle功能，框架直接无缝集成。
+(1)框架直接基于tolua#提供的luabundle功能，开关在AppConst.LuabundleMode。

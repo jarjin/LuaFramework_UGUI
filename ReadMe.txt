@@ -12,6 +12,9 @@
 游戏案例地址 http://www.ulua.org/showcase.html
 框架详细介绍 http://doc.ulua.org/default.asp?cateID=4
 
+//-------------2016-01-24-------------
+(1)修复逻辑小bug，添加移除单击监听。
+
 //-------------2016-01-23-------------
 (1)完善了Lua的字节码模式AppConst.LuaByteMode、Lua的AssetBundle模式AppConst.LuaBundleMode的交叉使用。
 (2)同步tolua #1.0.1版本。

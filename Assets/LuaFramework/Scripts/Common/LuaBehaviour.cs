@@ -8,8 +8,8 @@ using UnityEngine.UI;
 namespace LuaFramework {
     public class LuaBehaviour : View {
         private string data = null;
-        private List<LuaFunction> buttons = new List<LuaFunction>();
         protected static bool initialize = false;
+        private Dictionary<string, LuaFunction> buttons = new Dictionary<string, LuaFunction>();
 
         protected void Awake() {
             CallMethod("Awake", gameObject);
@@ -31,8 +31,8 @@ namespace LuaFramework {
         /// 添加单击事件
         /// </summary>
         public void AddClick(GameObject go, LuaFunction luafunc) {
-            if (go == null) return;
-            buttons.Add(luafunc);
+            if (go == null || luafunc == null) return;
+            buttons.Add(go.name, luafunc);
             go.GetComponent<Button>().onClick.AddListener(
                 delegate() {
                     luafunc.Call(go);
@@ -41,15 +41,29 @@ namespace LuaFramework {
         }
 
         /// <summary>
+        /// 删除单击事件
+        /// </summary>
+        /// <param name="go"></param>
+        public void RemoveClick(GameObject go) {
+            if (go == null) return;
+            LuaFunction luafunc = null;
+            if (buttons.TryGetValue(go.name, out luafunc)) {
+                luafunc.Dispose();
+                luafunc = null;
+                buttons.Remove(go.name);
+            }
+        }
+
+        /// <summary>
         /// 清除单击事件
         /// </summary>
         public void ClearClick() {
-            for (int i = 0; i < buttons.Count; i++) {
-                if (buttons[i] != null) {
-                    buttons[i].Dispose();
-                    buttons[i] = null;
+            foreach (var de in buttons) {
+                if (de.Value != null) {
+                    de.Value.Dispose();
                 }
             }
+            buttons.Clear();
         }
 
         /// <summary>

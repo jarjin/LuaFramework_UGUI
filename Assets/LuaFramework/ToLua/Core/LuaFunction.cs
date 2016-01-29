@@ -102,6 +102,11 @@ namespace LuaInterface
             return objs;
         }
 
+        public bool IsBegin()
+        {
+            return oldTop != -1;
+        }
+
         public void Push(double num)
         {
             luaState.Push(num);
@@ -269,7 +274,14 @@ namespace LuaInterface
             if (error != null)
             {
                 EndPCall();
-                throw new LuaException(error);                
+
+                if (LuaException.luaStack != null)
+                {
+                    error = string.Format("{0}{1}{2}", error, Environment.NewLine, LuaException.luaStack);
+                    LuaException.luaStack = null;
+                }
+
+                throw new LuaException(error);
             }            
         }
 

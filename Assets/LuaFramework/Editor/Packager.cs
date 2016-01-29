@@ -55,6 +55,9 @@ public class Packager {
     /// 生成绑定素材
     /// </summary>
     public static void BuildAssetResource(BuildTarget target, bool isWin) {
+        if (Directory.Exists(Util.DataPath)) {
+            Directory.Delete(Util.DataPath, true);
+        }
         string streamPath = Application.streamingAssetsPath;
         if (!Directory.Exists(streamPath)) {
             Directory.CreateDirectory(streamPath);

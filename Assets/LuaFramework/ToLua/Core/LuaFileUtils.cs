@@ -162,7 +162,7 @@ public class LuaFileUtils
 
         if (zipFile != null)
         {
-#if UNITY_5 
+#if UNITY_5
             string[] names = zipFile.GetAllAssetNames();
             for (int i = 0; i < names.Length; i++) {
                 if (names[i].EndsWith(fileName.ToLower() + ".bytes")) {
@@ -173,12 +173,13 @@ public class LuaFileUtils
             TextAsset luaCode = zipFile.LoadAsset<TextAsset>(fileName);
 #else
             TextAsset luaCode = zipFile.Load(fileName, typeof(TextAsset)) as TextAsset;
-#endif
+#endif            
 
-                if (luaCode != null) {
-                    buffer = luaCode.bytes;
-                    Resources.UnloadAsset(luaCode);
-                }
+            if (luaCode != null)
+            {
+                buffer = luaCode.bytes;
+                Resources.UnloadAsset(luaCode);
+            }
         }
 
         return buffer;
@@ -192,6 +193,8 @@ public class LuaFileUtils
         return "Android";
 #elif UNITY_IPHONE
         return "IOS";
+#else
+        return "";
 #endif
     }
 }

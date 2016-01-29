@@ -78,18 +78,15 @@ function Test6()
 end
 
 function Test7()	
-	collectgarbage("collect")
+	local Vector3 = Vector3	
 	local t = os.clock()
-	local v1 = Vector3.zero
-	
-	for i = 1, 2000000 do
+		
+	for i = 1, 200000 do
 		local v = Vector3.New(i,i,i)
 		Vector3.Normalize(v)
-		--v1 = v + v1
 	end
-	
-	t = os.clock() - t
-	print("2 cost time: ", t)
+		
+	print("lua Vector3 New Normalize cost time: ", os.clock() - t)	
 end
 
 function Test8()		

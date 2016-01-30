@@ -965,7 +965,7 @@ public static class ToLuaMenu
         }
     }
     
-    [MenuItem("Lua/Clear BaseType Wrap", false, 27)]
+    [MenuItem("Lua/Clear BaseType Wrap", false, 37)]
     static void ClearBaseTypeLuaWrap()
     {
         CreateDefaultWrapFile(WrapFiles.toluaBaseType, "System_ObjectWrap");

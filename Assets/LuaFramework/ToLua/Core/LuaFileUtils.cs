@@ -158,7 +158,7 @@ public class LuaFileUtils
             fileName = fileName.Substring(pos + 1);
         }
 
-        zipMap.TryGetValue(zipName, out zipFile);        
+        zipMap.TryGetValue(zipName.ToLower(), out zipFile);        
 
         if (zipFile != null)
         {

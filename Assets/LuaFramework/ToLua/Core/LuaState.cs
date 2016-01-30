@@ -74,11 +74,11 @@ namespace LuaInterface
             OpenBaseLibs();            
             LuaDLL.lua_settop(L, 0);
 
-            if (!LuaFileUtils.Instance.beZip)
-            {
-                AddSearchPath(Application.dataPath + "/Lua");
-                AddSearchPath(Application.dataPath + "/ToLua/Lua");
-            }
+            //if (!LuaFileUtils.Instance.beZip)
+            //{
+            //    AddSearchPath(Application.dataPath + "/Lua");
+            //    AddSearchPath(Application.dataPath + "/ToLua/Lua");
+            //}
         }
 
         void OpenBaseLibs()

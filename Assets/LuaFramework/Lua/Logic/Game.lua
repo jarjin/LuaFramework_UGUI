@@ -4,7 +4,7 @@ require "3rd/pbc/protobuf"
 local lpeg = require "lpeg"
 
 local json = require "cjson"
-local util = require "3rd/cjson.util"
+local util = require "3rd/cjson/util"
 
 local sproto = require "3rd/sproto/sproto"
 local core = require "sproto.core"

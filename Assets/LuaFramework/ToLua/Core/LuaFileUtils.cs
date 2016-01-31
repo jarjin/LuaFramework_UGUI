@@ -153,7 +153,7 @@ public class LuaFileUtils
         if (pos > 0)
         {
             zipName = fileName.Substring(0, pos);
-            zipName.Replace('/', '_');
+            zipName = zipName.Replace('/', '_');
             zipName = string.Format("Lua_{0}", zipName);            
             fileName = fileName.Substring(pos + 1);
         }

@@ -59,9 +59,10 @@ public class Packager {
             Directory.Delete(Util.DataPath, true);
         }
         string streamPath = Application.streamingAssetsPath;
-        if (!Directory.Exists(streamPath)) {
-            Directory.CreateDirectory(streamPath);
+        if (Directory.Exists(streamPath)) {
+            Directory.Delete(streamPath, true);
         }
+        Directory.CreateDirectory(streamPath);
         AssetDatabase.Refresh();
 
         maps.Clear();
@@ -135,6 +136,23 @@ public class Packager {
             AddBuildMap(name, "*.bytes", path);
         }
         AddBuildMap("lua/lua" + AppConst.ExtName, "*.bytes", "Assets/" + AppConst.LuaTempDir);
+
+        //-------------------------------处理非Lua文件----------------------------------
+        string luaPath = AppDataPath + "/StreamingAssets/lua/";
+        for (int i = 0; i < srcDirs.Length; i++) {
+            paths.Clear(); files.Clear();
+            string luaDataPath = srcDirs[i].ToLower();
+            Recursive(luaDataPath);
+            foreach (string f in files) {
+                if (f.EndsWith(".meta") || f.EndsWith(".lua")) continue;
+                string newfile = f.Replace(luaDataPath, "");
+                string path = Path.GetDirectoryName(luaPath + newfile);
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+                string destfile = path + "/" + Path.GetFileName(f);
+                File.Copy(f, destfile, true);
+            }
+        }
         AssetDatabase.Refresh();
     }
 

@@ -14,6 +14,9 @@
 tolua#地址： https://github.com/topameng/tolua
 tolua#底层库 https://github.com/topameng/tolua_runtime
 
+//-------------2016-01-31-------------
+(1)简化框架加载流程。
+
 //-------------2016-01-30-------------
 (1)添加luajit2.1版本在ios下的32、64位编码器。
 (2)修复加载Lua文件BUG。

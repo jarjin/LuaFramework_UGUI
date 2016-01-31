@@ -16,23 +16,28 @@ require "Common/functions"
 require "Controller/PromptCtrl"
 
 --管理器--
-GameManager = {};
-local this = GameManager;
+Game = {};
+local this = Game;
 
 local game; 
 local transform;
 local gameObject;
 local WWW = UnityEngine.WWW;
 
-function GameManager.LuaScriptPanel()
-	return unpack(PanelNames);
+function Game.InitViewPanels()
+	for i = 1, #PanelNames do
+		require ("View/"..tostring(PanelNames[i]))
+	end
 end
 
 --初始化完成，发送链接服务器信息--
-function GameManager.OnInitOK()
+function Game.OnInitOK()
     AppConst.SocketPort = 2012;
     AppConst.SocketAddress = "127.0.0.1";
     --NetManager:SendConnect();
+
+    --注册LuaView--
+    this.InitViewPanels();
 
     --this.test_class_func();
     --this.test_pblua_func();
@@ -52,7 +57,7 @@ function GameManager.OnInitOK()
 end
 
 --测试协同--
-function GameManager.test_coroutine()    
+function Game.test_coroutine()    
     logWarn("1111");
     coroutine.wait(1);	
     logWarn("2222");
@@ -63,7 +68,7 @@ function GameManager.test_coroutine()
 end
 
 --测试sproto--
-function GameManager.test_sproto_func()
+function Game.test_sproto_func()
     logWarn("test_sproto_func-------->>");
     local sp = sproto.parse [[
     .Person {
@@ -119,7 +124,7 @@ function GameManager.test_sproto_func()
 end
 
 --测试lpeg--
-function GameManager.test_lpeg_func()
+function Game.test_lpeg_func()
 	logWarn("test_lpeg_func-------->>");
 	-- matches a word followed by end-of-string
 	local p = lpeg.R"az"^1 * -1
@@ -130,12 +135,12 @@ function GameManager.test_lpeg_func()
 end
 
 --测试lua类--
-function GameManager.test_class_func()
+function Game.test_class_func()
     LuaClass:New(10, 20):test();
 end
 
 --测试pblua--
-function GameManager.test_pblua_func()
+function Game.test_pblua_func()
     local login = login_pb.LoginRequest();
     login.id = 2000;
     login.name = 'game';
@@ -146,7 +151,7 @@ function GameManager.test_pblua_func()
 end
 
 --pblua callback--
-function GameManager.OnPbluaCall(data)
+function Game.OnPbluaCall(data)
     local msg = login_pb.LoginRequest();
     msg:ParseFromString(data);
     print(msg);
@@ -154,7 +159,7 @@ function GameManager.OnPbluaCall(data)
 end
 
 --测试pbc--
-function GameManager.test_pbc_func()
+function Game.test_pbc_func()
     local path = Util.DataPath.."lua/3rd/pbc/addressbook.pb";
     log('io.open--->>>'..path);
 
@@ -176,7 +181,7 @@ function GameManager.test_pbc_func()
 end
 
 --pbc callback--
-function GameManager.OnPbcCall(data)
+function Game.OnPbcCall(data)
     local path = Util.DataPath.."lua/3rd/pbc/addressbook.pb";
 
     local addr = io.open(path, "rb")
@@ -193,19 +198,19 @@ function GameManager.OnPbcCall(data)
 end
 
 --测试cjson--
-function GameManager.test_cjson_func()
+function Game.test_cjson_func()
     local path = Util.DataPath.."lua/3rd/cjson/example2.json";
     local text = util.file_load(path);
     LuaHelper.OnJsonCallFunc(text, this.OnJsonCall);
 end
 
 --cjson callback--
-function GameManager.OnJsonCall(data)
+function Game.OnJsonCall(data)
     local obj = json.decode(data);
     print(obj['menu']['id']);
 end
 
 --销毁--
-function GameManager.OnDestroy()
+function Game.OnDestroy()
 	--logWarn('OnDestroy--->>>');
 end

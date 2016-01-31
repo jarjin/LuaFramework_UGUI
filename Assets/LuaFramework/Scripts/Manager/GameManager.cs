@@ -6,12 +6,10 @@ using LuaInterface;
 using System.Reflection;
 using System.IO;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace LuaFramework {
-    public class GameManager : LuaBehaviour {
+    public class GameManager : Manager {
+        protected static bool initialize = false;
         private List<string> downloadFiles = new List<string>();
 
         /// <summary>
@@ -238,40 +236,12 @@ namespace LuaFramework {
 #endif
             //---------------------------------------------------------
             LuaManager.InitStart();
-            LuaManager.DoFile("Logic/Network");      //加载游戏
-            LuaManager.DoFile("Logic/GameManager");   //加载网络
+            LuaManager.DoFile("Logic/Game");         //加载游戏
+            LuaManager.DoFile("Logic/Network");      //加载网络
+            NetManager.OnInit();                     //初始化网络
+            Util.CallMethod("Game", "OnInitOK");     //初始化完成
+
             initialize = true;
-
-            NetManager.OnInit();    //初始化网络
-
-            object[] panels = CallMethod("LuaScriptPanel");
-            foreach (object o in panels) {
-                string name = o.ToString().Trim();
-                if (string.IsNullOrEmpty(name)) continue;
-
-                LuaManager.DoFile("View/" + name);
-                Debug.LogWarning("LoadLua---->>>>" + name + ".lua");
-            }
-            //------------------------------------------------------------
-            CallMethod("OnInitOK");   //初始化完成
-        }
-
-        void Update() {
-            //if (LuaManager != null && initialize) {
-            //    LuaManager.Update();
-            //}
-        }
-
-        void LateUpdate() {
-            //if (LuaManager != null && initialize) {
-            //    LuaManager.LateUpate();
-            //}
-        }
-
-        void FixedUpdate() {
-            //if (LuaManager != null && initialize) {
-            //    LuaManager.FixedUpdate();
-            //}
         }
 
         /// <summary>

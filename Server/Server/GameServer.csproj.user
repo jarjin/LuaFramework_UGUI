@@ -12,8 +12,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>E:\workspace\SimpleFramework_NGUI\Server\Server\bin\Debug\SuperSocket.SocketService.exe</StartProgram>
+    <StartProgram>Server\bin\Debug\SuperSocket.SocketService.exe</StartProgram>
     <StartWorkingDirectory>
     </StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>Server\bin\Release\SuperSocket.SocketService.exe</StartProgram>
   </PropertyGroup>
 </Project>

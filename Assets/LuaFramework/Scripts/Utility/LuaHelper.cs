@@ -55,16 +55,10 @@ namespace LuaFramework {
         /// pbc/pblua函数回调
         /// </summary>
         /// <param name="func"></param>
-        //public static void OnCallLuaFunc(LuaStringBuffer data, LuaFunction func) {
-        //    byte[] buffer = data.buffer;
-        //    if (func != null) {
-        //        LuaState mgr = AppFacade.Instance.GetManager<LuaState>(ManagerName.Lua);
-        //        int oldTop = func.BeginPCall();
-        //        LuaDLL.lua_pushlstring(mgr.lua.L, buffer, buffer.Length);
-        //        if (func.PCall(oldTop, 1)) func.EndPCall(oldTop);
-        //    }
-        //    Debug.LogWarning("OnCallLuaFunc buffer:>>" + buffer + " lenght:>>" + buffer.Length);
-        //}
+        public static void OnCallLuaFunc(LuaByteBuffer data, LuaFunction func) {
+            if (func != null) func.Call(data);
+            Debug.LogWarning("OnCallLuaFunc length:>>" + data.buffer.Length);
+        }
 
         /// <summary>
         /// cjson函数回调

@@ -1,11 +1,11 @@
 require "Common/define"
 
---require "3rd/pblua/login_pb"
---require "3rd/pbc/protobuf"
+require "3rd/pblua/login_pb"
+require "3rd/pbc/protobuf"
 
---local sproto = require "3rd/sproto/sproto"
---local core = require "sproto.core"
---local print_r = require "3rd/sproto/print_r"
+local sproto = require "3rd/sproto/sproto"
+local core = require "sproto.core"
+local print_r = require "3rd/sproto/print_r"
 
 PromptCtrl = {};
 local this = PromptCtrl;

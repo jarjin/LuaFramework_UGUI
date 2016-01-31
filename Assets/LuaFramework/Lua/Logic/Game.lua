@@ -1,14 +1,14 @@
---require "3rd/pblua/login_pb"
---require "3rd/pbc/protobuf"
+require "3rd/pblua/login_pb"
+require "3rd/pbc/protobuf"
 
---local lpeg = require "lpeg"
+local lpeg = require "lpeg"
 
---local json = require "cjson"
---local util = require "3rd/cjson.util"
+local json = require "cjson"
+local util = require "3rd/cjson.util"
 
---local sproto = require "3rd/sproto/sproto"
---local core = require "sproto.core"
---local print_r = require "3rd/sproto/print_r"
+local sproto = require "3rd/sproto/sproto"
+local core = require "sproto.core"
+local print_r = require "3rd/sproto/print_r"
 
 require "Logic/LuaClass"
 require "Logic/CtrlManager"
@@ -34,18 +34,18 @@ end
 function Game.OnInitOK()
     AppConst.SocketPort = 2012;
     AppConst.SocketAddress = "127.0.0.1";
-    --NetManager:SendConnect();
+    networkMgr:SendConnect();
 
     --注册LuaView--
     this.InitViewPanels();
 
-    --this.test_class_func();
-    --this.test_pblua_func();
-    --this.test_cjson_func();
-    --this.test_pbc_func();
-    --this.test_lpeg_func();
-    --this.test_sproto_func();
-    --coroutine.start(this.test_coroutine);
+    this.test_class_func();
+    this.test_pblua_func();
+    this.test_cjson_func();
+    this.test_pbc_func();
+    this.test_lpeg_func();
+    this.test_sproto_func();
+    coroutine.start(this.test_coroutine);
 
     CtrlManager.Init();
     local ctrl = CtrlManager.GetCtrl(CtrlNames.Prompt);

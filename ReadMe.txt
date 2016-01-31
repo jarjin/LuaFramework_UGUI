@@ -16,6 +16,7 @@ tolua#底层库 https://github.com/topameng/tolua_runtime
 
 //-------------2016-01-31-------------
 (1)简化框架加载流程。
+(2)集成第三方库pblua\pbc\cjson\sproto等功能。
 
 //-------------2016-01-30-------------
 (1)添加luajit2.1版本在ios下的32、64位编码器。

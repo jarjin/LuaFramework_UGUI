@@ -20,10 +20,10 @@ local islogging = false;
 
 function Network.Start() 
     logWarn("Network.Start!!");
-    Event.AddListener(Connect, this.OnConnect); 
-    Event.AddListener(Login, this.OnLogin); 
-    Event.AddListener(Exception, this.OnException); 
-    Event.AddListener(Disconnect, this.OnDisconnect); 
+    Event.AddListener(Protocal.Connect, this.OnConnect); 
+    Event.AddListener(Protocal.Message, this.OnMessage); 
+    Event.AddListener(Protocal.Exception, this.OnException); 
+    Event.AddListener(Protocal.Disconnect, this.OnDisconnect); 
 end
 
 --Socket消息--
@@ -50,7 +50,7 @@ function Network.OnDisconnect()
 end
 
 --登录返回--
-function Network.OnLogin(buffer) 
+function Network.OnMessage(buffer) 
 	if TestProtoType == ProtocalType.BINARY then
 		this.TestLoginBinary(buffer);
 	end
@@ -64,12 +64,11 @@ function Network.OnLogin(buffer)
 		this.TestLoginSproto(buffer);
 	end
 	----------------------------------------------------
-    --createPanel("Message"); --Lua里创建面板
-    local ctrl = CtrlManager.GetCtrl(CtrlName.Message);
+    local ctrl = CtrlManager.GetCtrl(CtrlNames.Message);
     if ctrl ~= nil then
         ctrl:Awake();
     end
-    logWarn('OnLogin----------->>>');
+    logWarn('OnMessage-------->>>');
 end
 
 --二进制登录--
@@ -141,9 +140,9 @@ end
 
 --卸载网络监听--
 function Network.Unload()
-    Event.RemoveListener(Connect);
-    Event.RemoveListener(Login);
-    Event.RemoveListener(Exception);
-    Event.RemoveListener(Disconnect);
+    Event.RemoveListener(Protocal.Connect);
+    Event.RemoveListener(Protocal.Message);
+    Event.RemoveListener(Protocal.Exception);
+    Event.RemoveListener(Protocal.Disconnect);
     logWarn('Unload Network...');
 end

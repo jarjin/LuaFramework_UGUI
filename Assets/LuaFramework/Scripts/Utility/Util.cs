@@ -130,55 +130,6 @@ namespace LuaFramework {
         }
 
         /// <summary>
-        /// 手机震动
-        /// </summary>
-        public static void Vibrate() {
-            //int canVibrate = PlayerPrefs.GetInt(Const.AppPrefix + "Vibrate", 1);
-            //if (canVibrate == 1) iPhoneUtils.Vibrate();
-        }
-
-        /// <summary>
-        /// Base64编码
-        /// </summary>
-        public static string Encode(string message) {
-            byte[] bytes = Encoding.GetEncoding("utf-8").GetBytes(message);
-            return Convert.ToBase64String(bytes);
-        }
-
-        /// <summary>
-        /// Base64解码
-        /// </summary>
-        public static string Decode(string message) {
-            byte[] bytes = Convert.FromBase64String(message);
-            return Encoding.GetEncoding("utf-8").GetString(bytes);
-        }
-
-        /// <summary>
-        /// 判断数字
-        /// </summary>
-        public static bool IsNumeric(string str) {
-            if (str == null || str.Length == 0) return false;
-            for (int i = 0; i < str.Length; i++) {
-                if (!Char.IsNumber(str[i])) { return false; }
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// HashToMD5Hex
-        /// </summary>
-        public static string HashToMD5Hex(string sourceStr) {
-            byte[] Bytes = Encoding.UTF8.GetBytes(sourceStr);
-            using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider()) {
-                byte[] result = md5.ComputeHash(Bytes);
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < result.Length; i++)
-                    builder.Append(result[i].ToString("x2"));
-                return builder.ToString();
-            }
-        }
-
-        /// <summary>
         /// 计算字符串的MD5值
         /// </summary>
         public static string md5(string source) {
@@ -226,77 +177,12 @@ namespace LuaFramework {
         }
 
         /// <summary>
-        /// 生成一个Key名
-        /// </summary>
-        public static string GetKey(string key) {
-            return AppConst.AppPrefix + AppConst.UserId + "_" + key;
-        }
-
-        /// <summary>
-        /// 取得整型
-        /// </summary>
-        public static int GetInt(string key) {
-            string name = GetKey(key);
-            return PlayerPrefs.GetInt(name);
-        }
-
-        /// <summary>
-        /// 有没有值
-        /// </summary>
-        public static bool HasKey(string key) {
-            string name = GetKey(key);
-            return PlayerPrefs.HasKey(name);
-        }
-
-        /// <summary>
-        /// 保存整型
-        /// </summary>
-        public static void SetInt(string key, int value) {
-            string name = GetKey(key);
-            PlayerPrefs.DeleteKey(name);
-            PlayerPrefs.SetInt(name, value);
-        }
-
-        /// <summary>
-        /// 取得数据
-        /// </summary>
-        public static string GetString(string key) {
-            string name = GetKey(key);
-            return PlayerPrefs.GetString(name);
-        }
-
-        /// <summary>
-        /// 保存数据
-        /// </summary>
-        public static void SetString(string key, string value) {
-            string name = GetKey(key);
-            PlayerPrefs.DeleteKey(name);
-            PlayerPrefs.SetString(name, value);
-        }
-
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        public static void RemoveData(string key) {
-            string name = GetKey(key);
-            PlayerPrefs.DeleteKey(name);
-        }
-
-        /// <summary>
         /// 清理内存
         /// </summary>
         public static void ClearMemory() {
             GC.Collect(); Resources.UnloadUnusedAssets();
             LuaManager mgr = AppFacade.Instance.GetManager<LuaManager>(ManagerName.Lua);
             if (mgr != null) mgr.LuaGC();
-        }
-
-        /// <summary>
-        /// 是否为数字
-        /// </summary>
-        public static bool IsNumber(string strNumber) {
-            Regex regex = new Regex("[^0-9]");
-            return !regex.IsMatch(strNumber);
         }
 
         /// <summary>
@@ -310,6 +196,10 @@ namespace LuaFramework {
                 }
                 if (AppConst.DebugMode) {
                     return Application.dataPath + "/" + AppConst.AssetDir + "/";
+                }
+                if (Application.platform == RuntimePlatform.OSXEditor) {
+                    int i = Application.dataPath.LastIndexOf('/');
+                    return Application.dataPath.Substring(0, i + 1) + game + "/";
                 }
                 return "c:/" + game + "/";
             }
@@ -366,82 +256,6 @@ namespace LuaFramework {
                 break;
             }
             return path;
-        }
-
-        /// <summary>
-        /// 是否是登录场景
-        /// </summary>
-        public static bool isLogin {
-            get { return Application.loadedLevelName.CompareTo("login") == 0; }
-        }
-
-        /// <summary>
-        /// 是否是城镇场景
-        /// </summary>
-        public static bool isMain {
-            get { return Application.loadedLevelName.CompareTo("main") == 0; }
-        }
-
-        /// <summary>
-        /// 判断是否是战斗场景
-        /// </summary>
-        public static bool isFight {
-            get { return Application.loadedLevelName.CompareTo("fight") == 0; }
-        }
-
-        /// <summary>
-        /// 取得Lua路径
-        /// </summary>
-        public static string LuaPath(string name) {
-            string path = AppConst.DebugMode ? Application.dataPath + "/" : DataPath;
-            string lowerName = name.ToLower();
-            if (lowerName.EndsWith(".lua")) {
-                int index = name.LastIndexOf('.');
-                name = name.Substring(0, index);
-            }
-            name = name.Replace('.', '/');
-            if (luaPaths.Count == 0) {
-                AddLuaPath(path + "lua/");
-            }
-            path = SearchLuaPath(name + ".lua");
-            return path;
-        }
-
-        /// <summary>
-        /// 获取Lua路径
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public static string SearchLuaPath(string fileName) {
-            string filePath = fileName;
-            for (int i = 0; i < luaPaths.Count; i++) {
-                filePath = luaPaths[i] + fileName;
-                if (File.Exists(filePath)) {
-                    return filePath;
-                }
-            }
-            return filePath;
-        }
-
-        /// <summary>
-        /// 添加的Lua路径
-        /// </summary>
-        /// <param name="path"></param>
-        public static void AddLuaPath(string path) {
-            if (!luaPaths.Contains(path)) {
-                if (!path.EndsWith("/")) {
-                    path += "/";
-                }
-                luaPaths.Add(path);
-            }
-        }
-
-        /// <summary>
-        /// 删除Lua路径
-        /// </summary>
-        /// <param name="path"></param>
-        public static void RemoveLuaPath(string path) {
-            luaPaths.Remove(path);
         }
 
         public static void Log(string str) {
@@ -514,18 +328,6 @@ namespace LuaFramework {
             }
 #endif
             return true;
-        }
-
-        /// <summary>
-        /// 是不是苹果平台
-        /// </summary>
-        /// <returns></returns>
-        public static bool isApplePlatform {
-            get {
-                return Application.platform == RuntimePlatform.IPhonePlayer ||
-                       Application.platform == RuntimePlatform.OSXEditor ||
-                       Application.platform == RuntimePlatform.OSXPlayer;            
-            }
         }
     }
 }

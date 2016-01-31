@@ -128,8 +128,8 @@ public class Packager {
         }
         string[] dirs = Directory.GetDirectories(streamDir, "*", SearchOption.AllDirectories);
         for (int i = 0; i < dirs.Length; i++) {
-            string name = dirs[i].Remove(0, dirs[i].LastIndexOf('/') + 1);
-            name = name.Replace('\\', '_');
+            string name = dirs[i].Replace(streamDir, string.Empty);
+            name = name.Replace('\\', '_').Replace('/', '_');
             name = "lua/lua_" + name.ToLower() + AppConst.ExtName;
 
             string path = "Assets" + dirs[i].Replace(Application.dataPath, "");

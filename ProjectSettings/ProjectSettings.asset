@@ -256,8 +256,8 @@ PlayerSettings:
   spritePackerPolicy: DefaultPackerPolicy
   scriptingDefineSymbols:
     1: ASYNC_MODE
-    4: 
-    7: 
+    4: ASYNC_MODE
+    7: ASYNC_MODE
   metroPackageName: SimpleFramework
   metroPackageLogo: 
   metroPackageLogo140: 

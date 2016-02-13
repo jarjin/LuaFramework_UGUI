@@ -36,15 +36,15 @@ function PromptCtrl.OnCreate(obj)
 	logWarn("Start lua--->>"..gameObject.name);
 
 	prompt:AddClick(PromptPanel.btnOpen, this.OnClick);
-	resMgr:LoadAsset('prompt', 'PromptItem', this.InitPanel);
+	resMgr:LoadPrefab('prompt', { 'PromptItem' }, this.InitPanel);
 end
 
 --初始化面板--
-function PromptCtrl.InitPanel(prefab)
+function PromptCtrl.InitPanel(objs)
 	local count = 100; 
 	local parent = PromptPanel.gridParent;
 	for i = 1, count do
-		local go = newObject(prefab);
+		local go = newObject(objs[0]);
 		go.name = 'Item'..tostring(i);
 		go.transform:SetParent(parent);
 		go.transform.localScale = Vector3.one;
@@ -54,18 +54,6 @@ function PromptCtrl.InitPanel(prefab)
 	    local label = go.transform:FindChild('Text');
 	    label:GetComponent('Text').text = tostring(i);
 	end
-	local rtTrans = parent:GetComponent("RectTransform");
-	local rowNum = count / 4;
-	if count % 4 > 0 then
-		rowNum = toInt(rowNum + 1);
-	end
-	local size = rtTrans.sizeDelta;
-	size.y = rowNum * 100 + (rowNum - 1) * 50;
-	rtTrans.sizeDelta = size;
-
-	local position = rtTrans.localPosition;
-	position.y = -(size.y / 2);
-	rtTrans.localPosition = position;
 end
 
 --滚动项单击--

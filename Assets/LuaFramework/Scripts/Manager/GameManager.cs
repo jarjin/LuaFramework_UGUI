@@ -219,22 +219,18 @@ namespace LuaFramework {
         /// 资源初始化结束
         /// </summary>
         public void OnResourceInited() {
-            StartCoroutine(Initialize());
-        }
-
-        IEnumerator Initialize() {
 #if ASYNC_MODE
-            // Initialize AssetBundleManifest which loads the AssetBundleManifest object.
-            ResourceManager.BaseDownloadingURL = Util.GetRelativePath();
-            var request = ResourceManager.Initialize(AppConst.AssetDir);
-            if (request != null) {
-                yield return StartCoroutine(request);
-            }
+            ResManager.Initialize(AppConst.AssetDir, delegate() {
+                Debug.Log("Initialize OK!!!");
+                this.OnInitialize();
+            });
 #else
             ResManager.Initialize();
-            yield return 0;
+            this.OnInitialize();
 #endif
-            //---------------------------------------------------------
+        }
+
+        void OnInitialize() {
             LuaManager.InitStart();
             LuaManager.DoFile("Logic/Game");         //加载游戏
             LuaManager.DoFile("Logic/Network");      //加载网络

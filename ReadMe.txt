@@ -14,6 +14,9 @@
 tolua#地址： https://github.com/topameng/tolua
 tolua#底层库 https://github.com/topameng/tolua_runtime
 
+//-------------2016-02-13-------------
+(1)重写资源管理器的异步加载模式，原来基于官方DEMO的版本在Lua跟c#同时请求同一份素材会存在加载BUG。
+
 //-------------2016-01-31-------------
 (1)简化框架加载流程。
 (2)集成第三方库pblua\pbc\cjson\sproto等功能。

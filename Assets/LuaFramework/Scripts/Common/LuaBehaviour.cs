@@ -70,7 +70,7 @@ namespace LuaFramework {
             ClearClick();
 #if ASYNC_MODE
             string abName = name.ToLower().Replace("panel", "");
-            ResourceManager.UnloadAssetBundle(abName + AppConst.ExtName);
+            ResManager.UnloadAssetBundle(abName + AppConst.ExtName);
 #endif
             Util.ClearMemory();
             Debug.Log("~" + name + " was destroy!");

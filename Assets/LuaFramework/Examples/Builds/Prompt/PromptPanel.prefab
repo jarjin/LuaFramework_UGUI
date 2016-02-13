@@ -82,6 +82,7 @@ GameObject:
   - 222: {fileID: 22277020}
   - 114: {fileID: 11433454}
   - 114: {fileID: 11442670}
+  - 114: {fileID: 11489088}
   m_Layer: 5
   m_Name: Grid
   m_TagString: Untagged
@@ -405,6 +406,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11489088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
 --- !u!114 &11497946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -579,9 +593,9 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: .5, y: 1}
   m_AnchorMax: {x: .5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -132}
-  m_SizeDelta: {x: 544, y: 254}
-  m_Pivot: {x: .5, y: .5}
+  m_AnchoredPosition: {x: -245, y: -127}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!224 &22497896
 RectTransform:
   m_ObjectHideFlags: 1

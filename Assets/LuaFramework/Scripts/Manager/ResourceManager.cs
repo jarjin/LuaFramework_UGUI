@@ -27,6 +27,7 @@ namespace LuaFramework {
         Dictionary<string, List<LoadAssetRequest>> m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
 
         class LoadAssetRequest {
+            public Type assetType;
             public string[] assetNames;
             public LuaFunction luaFunc;
             public Action<UObject[]> sharpFunc;
@@ -63,16 +64,13 @@ namespace LuaFramework {
             if (!abName.EndsWith(AppConst.ExtName)) {
                 abName += AppConst.ExtName;
             }
+            if (abName.Contains("/")) {
+                return abName;
+            }
             string[] paths = m_AssetBundleManifest.GetAllAssetBundles();
             for (int i = 0; i < paths.Length; i++) {
-                if (paths[i].Contains("/")) {
-                    if (paths[i].EndsWith("/" + abName + AppConst.ExtName)) {
-                        return paths[i];
-                    }
-                } else {
-                    if (paths[i].Equals(abName)) {
-                        return paths[i];
-                    }
+                if (paths[i].Equals(abName)) {
+                    return paths[i];
                 }
             }
             Debug.LogError("GetRealAssetPath Error:>>" + abName);
@@ -86,6 +84,7 @@ namespace LuaFramework {
             abName = GetRealAssetPath(abName);
 
             LoadAssetRequest request = new LoadAssetRequest();
+            request.assetType = typeof(T);
             request.assetNames = assetNames;
             request.luaFunc = func;
             request.sharpFunc = action;
@@ -93,10 +92,12 @@ namespace LuaFramework {
             List<LoadAssetRequest> requests = null;
             if (!m_LoadRequests.TryGetValue(abName, out requests)) {
                 requests = new List<LoadAssetRequest>();
+                requests.Add(request);
                 m_LoadRequests.Add(abName, requests);
+                StartCoroutine(OnLoadAsset<T>(abName));
+            } else {
+                requests.Add(request);
             }
-            requests.Add(request);
-            StartCoroutine(OnLoadAsset<T>(abName));
         }
 
         IEnumerator OnLoadAsset<T>(string abName) where T : UObject {
@@ -123,7 +124,7 @@ namespace LuaFramework {
                 AssetBundle ab = bundleInfo.m_AssetBundle;
                 for (int j = 0; j < assetNames.Length; j++) {
                     string assetPath = assetNames[j];
-                    AssetBundleRequest request = ab.LoadAssetAsync<T>(assetPath);
+                    AssetBundleRequest request = ab.LoadAssetAsync(assetPath, list[i].assetType);
                     yield return request;
                     result.Add(request.asset);
 
@@ -156,7 +157,10 @@ namespace LuaFramework {
                     m_Dependencies.Add(abName, dependencies);
                     for (int i = 0; i < dependencies.Length; i++) {
                         string depName = dependencies[i];
-                        if (!m_LoadedAssetBundles.ContainsKey(depName) && !m_LoadRequests.ContainsKey(depName)) {
+                        AssetBundleInfo bundleInfo = null;
+                        if (m_LoadedAssetBundles.TryGetValue(depName, out bundleInfo)) {
+                            bundleInfo.m_ReferencedCount++;
+                        } else if (!m_LoadRequests.ContainsKey(depName)) {
                             yield return StartCoroutine(OnLoadAssetBundle(depName, type));
                         }
                     }

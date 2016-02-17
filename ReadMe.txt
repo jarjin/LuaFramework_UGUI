@@ -13,6 +13,7 @@
 框架详细介绍 http://doc.ulua.org/default.asp
 tolua#地址： https://github.com/topameng/tolua
 tolua#底层库 https://github.com/topameng/tolua_runtime
+服务器框架:  https://github.com/jarjin/ServerFramework
 
 //-------------2016-02-13-------------
 (1)重写资源管理器的异步加载模式，原来基于官方DEMO的版本在Lua跟c#同时请求同一份素材会存在加载BUG。

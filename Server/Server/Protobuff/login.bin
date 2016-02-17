@@ -1,11 +1,0 @@
-
-c
-login.proto"7
-LoginRequest
-
-id (
-name (	
-email (	"
-LoginResponse
-
-id (

@@ -69,7 +69,9 @@ namespace LuaFramework {
             }
             string[] paths = m_AssetBundleManifest.GetAllAssetBundles();
             for (int i = 0; i < paths.Length; i++) {
-                if (paths[i].Equals(abName)) {
+                int index = paths[i].LastIndexOf('/');
+                string path = paths[i].Remove(0, index + 1);
+                if (path.Equals(abName)) {
                     return paths[i];
                 }
             }

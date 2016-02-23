@@ -13,7 +13,7 @@ public class AssetBundleInfo {
 
     public AssetBundleInfo(AssetBundle assetBundle) {
         m_AssetBundle = assetBundle;
-        m_ReferencedCount = 1;
+        m_ReferencedCount = 0;
     }
 }
 

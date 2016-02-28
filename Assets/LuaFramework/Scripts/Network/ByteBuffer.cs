@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using System;
+using LuaInterface;
 
 namespace LuaFramework {
     public class ByteBuffer {
@@ -74,9 +75,9 @@ namespace LuaFramework {
             writer.Write(v);
         }
 
-        //public void WriteBuffer(LuaStringBuffer strBuffer) {
-        //    WriteBytes(strBuffer.buffer);
-        //}
+        public void WriteBuffer(LuaByteBuffer strBuffer) {
+            WriteBytes(strBuffer.buffer);
+        }
 
         public byte ReadByte() {
             return reader.ReadByte();
@@ -118,10 +119,10 @@ namespace LuaFramework {
             return reader.ReadBytes(len);
         }
 
-        //public LuaStringBuffer ReadBuffer() {
-        //    byte[] bytes = ReadBytes();
-        //    return new LuaStringBuffer(bytes);
-        //}
+        public LuaByteBuffer ReadBuffer() {
+            byte[] bytes = ReadBytes();
+            return new LuaByteBuffer(bytes);
+        }
 
         public byte[] ToBytes() {
             writer.Flush();

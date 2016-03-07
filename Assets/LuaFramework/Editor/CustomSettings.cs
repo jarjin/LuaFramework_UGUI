@@ -7,7 +7,7 @@ using LuaFramework;
 using BindType = ToLuaMenu.BindType;
 using UnityEngine.UI;
 
-public static class WrapFiles
+public static class CustomSettings
 {
     public static string FrameworkPath = AppConst.FrameworkRoot;
     public static string saveDir = FrameworkPath + "/ToLua/Source/Generate/";
@@ -27,13 +27,14 @@ public static class WrapFiles
         typeof(UnityEngine.Resources),
         typeof(UnityEngine.Physics),
         typeof(UnityEngine.RenderSettings),
+        typeof(UnityEngine.QualitySettings),
     };
 
     //附加导出委托类型(在导出委托时, customTypeList 中牵扯的委托类型都会导出， 无需写在这里)
     public static DelegateType[] customDelegateList = 
     {        
         _DT(typeof(Action)),
-        _DT(typeof(Action<GameObject>)),
+        //_DT(typeof(Action<GameObject>)).SetAbrName("ActionGo"),
         _DT(typeof(UnityEngine.Events.UnityAction)),       
         
         _DT(typeof(TestEventListener.OnClick)),
@@ -125,6 +126,13 @@ public static class WrapFiles
         _GT(typeof(ThreadManager)),
         _GT(typeof(NetworkManager)),
         _GT(typeof(ResourceManager)),
+    };
+
+    //重载函数，相同参数个数，相同位置out参数匹配出问题时, 需要强制匹配解决
+    //使用方法参见例子14
+    public static List<Type> outList = new List<Type>()
+    {
+        
     };
 
     static BindType _GT(Type t)

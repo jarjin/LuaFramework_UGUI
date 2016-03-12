@@ -17,6 +17,7 @@ tolua#底层库 https://github.com/topameng/tolua_runtime
 
 //-------------2016-03-12-------------
 (1)修复LuaLoop协同功能。
+(2)修复IOS上面加载luabundle大小写问题。
 
 //-------------2016-03-06-------------
 (1)更新tolua #到1.03版本

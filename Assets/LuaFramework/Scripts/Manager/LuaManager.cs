@@ -6,12 +6,15 @@ namespace LuaFramework {
     public class LuaManager : Manager {
         private LuaState lua;
         private LuaLoader loader;
+        private LuaLooper loop = null;
 
         // Use this for initialization
         void Awake() {
             loader = new LuaLoader();
             lua = new LuaState();
-            this.InitLuaLibrary();
+            this.OpenLibs();
+            lua.LuaSetTop(0);
+
             LuaBinder.Bind(lua);
             LuaCoroutine.Register(lua, this);
         }
@@ -20,13 +23,28 @@ namespace LuaFramework {
             InitLuaPath();
             InitLuaBundle();
             this.lua.Start();    //启动LUAVM
+            this.StartMain();
+            this.StartLooper();
+        }
+
+        void StartLooper() {
+            loop = gameObject.AddComponent<LuaLooper>();
+            loop.luaState = lua;
+        }
+
+        void StartMain() {
             lua.DoFile("Main.lua");
+
+            LuaFunction main = lua.GetFunction("Main");
+            main.Call();
+            main.Dispose();
+            main = null;    
         }
         
         /// <summary>
         /// 初始化加载第三方库
         /// </summary>
-        void InitLuaLibrary() {
+        void OpenLibs() {
             lua.OpenLibs(LuaDLL.luaopen_pb);      
             lua.OpenLibs(LuaDLL.luaopen_sproto_core);
             lua.OpenLibs(LuaDLL.luaopen_protobuf_c);
@@ -92,6 +110,9 @@ namespace LuaFramework {
         }
 
         public void Close() {
+            loop.Destroy();
+            loop = null;
+
             lua.Dispose();
             lua = null;
             loader = null;

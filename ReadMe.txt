@@ -15,6 +15,9 @@ tolua#地址： https://github.com/topameng/tolua
 tolua#底层库 https://github.com/topameng/tolua_runtime
 服务器框架:  https://github.com/jarjin/ServerFramework
 
+//-------------2016-03-12-------------
+(1)修复LuaLoop协同功能。
+
 //-------------2016-03-06-------------
 (1)更新tolua #到1.03版本
 

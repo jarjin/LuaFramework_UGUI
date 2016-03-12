@@ -19,7 +19,7 @@ public class ScriptsFromFile : MonoBehaviour
 #endif 
         lua = new LuaState();
         lua.Start();
-        string fullPath = Application.dataPath + "/ToLua/Examples/02_ScriptsFromFile";
+        string fullPath = Application.dataPath + "/LuaFramework/ToLua/Examples/02_ScriptsFromFile";
         lua.AddSearchPath(fullPath);                    
 	}
 

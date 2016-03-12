@@ -8,15 +8,14 @@
 支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)/
 	  WP8(SimpleFramework_WP_v0.1.1 (nlua))/
 
-视频教程地址 http://pan.baidu.com/s/1gd8fG4N
-游戏案例地址 http://www.ulua.org/showcase.html
-框架详细介绍 http://doc.ulua.org/default.asp
+网盘下载地址 http://pan.baidu.com/s/1nu59wzJ
 tolua#地址： https://github.com/topameng/tolua
-tolua#底层库 https://github.com/topameng/tolua_runtime
+框架底层库:  https://github.com/jarjin/tolua_rumtime
 服务器框架:  https://github.com/jarjin/ServerFramework
 
 //-------------2016-03-12-------------
 (1)修复LuaLoop协同功能。
+(2)修复IOS上面加载luabundle大小写问题。
 
 //-------------2016-03-06-------------
 (1)更新tolua #到1.03版本

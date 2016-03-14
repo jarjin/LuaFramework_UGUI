@@ -13,6 +13,9 @@ tolua#地址： https://github.com/topameng/tolua
 框架底层库:  https://github.com/jarjin/tolua_rumtime
 服务器框架:  https://github.com/jarjin/ServerFramework
 
+//-------------2016-03-15-------------
+(1)添加-fembed-bitcode标记支持BITCODE_MODE
+
 //-------------2016-03-12-------------
 (1)修复LuaLoop协同功能。
 (2)修复IOS上面加载luabundle大小写问题。

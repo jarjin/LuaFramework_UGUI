@@ -156,8 +156,10 @@ _event.__call = function(self, ...)
 	for i, f in ilist(_list) do								
 		local flag, msg = f(...)
 		
-		if not flag and safe then								
-			_list:remove(i)
+		if not flag then
+			if safe then								
+				_list:remove(i)
+			end
 			self.lock = false		
 			error(msg)				
 		end

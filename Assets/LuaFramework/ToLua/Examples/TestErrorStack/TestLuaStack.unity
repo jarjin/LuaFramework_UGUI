@@ -199,6 +199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   go: {fileID: 176158, guid: ec8a2f7e4eaf1c64e8393014e602047c, type: 2}
+  go2: {fileID: 176158, guid: 0e472cc047eb20841bbb7c64dfeb0d78, type: 2}
+  text: {fileID: 0}
 --- !u!4 &1378972057
 Transform:
   m_ObjectHideFlags: 0

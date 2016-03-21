@@ -8,6 +8,7 @@
 支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)/
 	  WP8(SimpleFramework_WP_v0.1.1 (nlua))/
 
+框架文档地址 http://doc.ulua.org/
 网盘下载地址 http://pan.baidu.com/s/1nu59wzJ
 tolua#地址： https://github.com/topameng/tolua
 框架底层库:  https://github.com/jarjin/tolua_rumtime

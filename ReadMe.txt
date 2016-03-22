@@ -14,8 +14,12 @@ tolua#地址： https://github.com/topameng/tolua
 框架底层库:  https://github.com/jarjin/tolua_rumtime
 服务器框架:  https://github.com/jarjin/ServerFramework
 
+//-------------2016-03-22-------------
+(1)更新tolua#到1.0.4.102版
+
+
 //-------------2016-03-21-------------
-(1)更新tolua#到1.04版
+(1)更新tolua#到1.04.80版
 
 //-------------2016-03-15-------------
 (1)添加-fembed-bitcode标记支持BITCODE_MODE

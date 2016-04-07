@@ -14,13 +14,15 @@ tolua#地址： https://github.com/topameng/tolua
 框架底层库:  https://github.com/jarjin/tolua_rumtime
 服务器框架:  https://github.com/jarjin/ServerFramework
 
+//-------------2016-04-08-------------
+(1)更新tolua#到1.0.4.118版
+
 //-------------2016-03-25-------------
 (1)清理meta文件等问题。
 (2)更新tolua#到1.0.4.109版
 
 //-------------2016-03-22-------------
 (1)更新tolua#到1.0.4.102版
-
 
 //-------------2016-03-21-------------
 (1)更新tolua#到1.04.80版

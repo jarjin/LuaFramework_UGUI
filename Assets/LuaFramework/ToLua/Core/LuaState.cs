@@ -76,9 +76,7 @@ namespace LuaInterface
 
         Dictionary<int, Type> typeMap = new Dictionary<int, Type>();
 
-#if !MULTI_STATE
         private static LuaState mainState = null;
-#endif        
         private static Dictionary<IntPtr, LuaState> stateMap = new Dictionary<IntPtr, LuaState>();
 
         private int beginCount = 0;
@@ -86,9 +84,11 @@ namespace LuaInterface
 
         public LuaState()
         {
-#if !MULTI_STATE
-            mainState = this;
-#endif                       
+            if (mainState == null)
+            {
+                mainState = this;
+            }
+
             LuaException.Init();     
             L = LuaDLL.luaL_newstate();                                                                        
             LuaDLL.tolua_openlibs(L);
@@ -98,11 +98,13 @@ namespace LuaInterface
             OpenBaseLibs();            
             LuaDLL.lua_settop(L, 0);
 
+#if UNITY_EDITOR
             if (!LuaFileUtils.Instance.beZip)
             {                
                 AddSearchPath(LuaConst.luaDir);
                 AddSearchPath(LuaConst.toluaDir);
             }
+#endif
         }
 
         void OpenBaseLibs()
@@ -378,14 +380,14 @@ namespace LuaInterface
             return mainState;
 #else
 
-            if (map.Count <= 1)
+            if (stateMap.Count <= 1)
             {
                 return mainState;
             }
 
             LuaState state = null;
 
-            if (map.TryGetValue(ptr, out state))
+            if (stateMap.TryGetValue(ptr, out state))
             {
                 return state;
             }
@@ -401,8 +403,7 @@ namespace LuaInterface
 #if !MULTI_STATE
             return mainState.translator;
 #else
-
-            if (map.Count <= 1)
+            if (stateMap.Count <= 1)
             {
                 return mainState.translator;
             }
@@ -1487,7 +1488,7 @@ namespace LuaInterface
         }
 
         /*--------------------------------对于LuaDLL函数的简单封装------------------------------------------*/
-        #region SIMPLE_LUA_FUNCTION
+#region SIMPLE_LUA_FUNCTION
         public int LuaGetTop()
         {
             return LuaDLL.lua_gettop(L);
@@ -1614,7 +1615,7 @@ namespace LuaInterface
             {
                 throw new LuaException("Require not need file extension: " + str);
             }
-#endif                        
+#endif
             return LuaDLL.tolua_require(L, fileName);
         }
 
@@ -1685,7 +1686,7 @@ namespace LuaInterface
         {
             return LuaDLL.tolua_fixedupdate(L, fixedTime);
         }
-        #endregion
+#endregion
         /*--------------------------------------------------------------------------------------------------*/
 
         void CloseBaseRef()
@@ -1740,10 +1741,11 @@ namespace LuaInterface
                 Debugger.Log("LuaState quit");
             }
 
-            
-#if !MULTI_STATE                  
-            mainState = null;
-#endif                              
+            if (mainState == this)
+            {
+                mainState = null;
+            }
+                        
             LuaFileUtils.Instance.Dispose();
             System.GC.SuppressFinalize(this);            
         }

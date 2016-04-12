@@ -75,7 +75,7 @@ namespace LuaInterface
     public static class ToLuaFlags
     {
         public const int INDEX_ERROR = 1;       //Index 失败提示error信息，false返回nil
-        public const int USE_INT64 = 2;         //是否内部支持原生int64, 默认 false
+        public const int USE_INT64 = 2;         //是否luavm内部支持原生int64(目前用的vm都不支持, 默认false)
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -182,7 +182,7 @@ namespace LuaInterface
 
     public class LuaDLL
     {
-        public static string version = "1.0.4.102";
+        public static string version = "1.0.4.118";
         public static int LUA_MULTRET = -1;
         public static string[] LuaTypeName = { "none", "nil", "boolean", "lightuserdata", "number", "string", "table", "function", "userdata", "thread" };
 
@@ -235,7 +235,7 @@ namespace LuaInterface
          * state manipulation
          */
         //[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        //public static extern IntPtr lua_newstate(LuaAlloc f, IntPtr ud);
+        //public static extern IntPtr lua_newstate(LuaAlloc f, IntPtr ud);                      //luajit64位不能用这个函数
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_close(IntPtr luaState);
@@ -333,8 +333,10 @@ namespace LuaInterface
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_pushnumber(IntPtr luaState, double number);
 
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void lua_pushinteger(IntPtr luaState, int n);                          
+        public static void lua_pushinteger(IntPtr L, int n)
+        {
+            lua_pushnumber(L, n);
+        }                       
 
         public static void lua_pushlstring(IntPtr luaState, byte[] str, int size)                   //[-0, +1, m]
         {
@@ -811,8 +813,8 @@ namespace LuaInterface
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void luaL_where(IntPtr luaState, int level);                                           //[-0, +1, e]
 
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luaL_error(IntPtr luaState, string message);
+        //[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        //public static extern int luaL_error(IntPtr luaState, string message);
 
         public static int luaL_throw(IntPtr luaState, string message)
         {
@@ -1176,6 +1178,6 @@ namespace LuaInterface
             }
 
             tolua_regthis(L, pGet, pSet);
-        }
+        }   
     }
 }

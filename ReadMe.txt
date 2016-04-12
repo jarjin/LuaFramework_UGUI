@@ -5,18 +5,26 @@
 
 有问题请加：ulua技术交流群 434341400
 
-支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)/
-	  WP8(SimpleFramework_WP_v0.1.1 (nlua))/
+支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)
 
+**资料地址**<br>
 框架文档地址 http://doc.ulua.org/
 网盘下载地址 http://pan.baidu.com/s/1nu59wzJ
 tolua#地址： https://github.com/topameng/tolua
 框架底层库:  https://github.com/jarjin/tolua_rumtime
 服务器框架:  https://github.com/jarjin/ServerFramework
+XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
+UnityHello:  https://github.com/woshihuo12/UnityHello
+
+//-------------2016-04-08-------------
+(1)更新tolua#到1.0.4.118版
+
+//-------------2016-03-25-------------
+(1)清理meta文件等问题。
+(2)更新tolua#到1.0.4.109版
 
 //-------------2016-03-22-------------
 (1)更新tolua#到1.0.4.102版
-
 
 //-------------2016-03-21-------------
 (1)更新tolua#到1.04.80版

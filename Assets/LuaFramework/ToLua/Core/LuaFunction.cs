@@ -27,10 +27,10 @@ namespace LuaInterface
 {
     public class LuaFunction : LuaBaseRef
     {
-        protected class FuncData
+        protected struct FuncData
         {
-            public int oldTop = -1;
-            public int stackPos = -1;
+            public int oldTop;
+            public int stackPos;
 
             public FuncData(int top, int stack)
             {
@@ -299,8 +299,16 @@ namespace LuaInterface
 
         public void Push(LuaByteBuffer buffer)
         {
-            luaState.Push(buffer);
-            ++argCount;
+            try
+            {
+                luaState.Push(buffer);
+                ++argCount;
+            }
+            catch (Exception e)
+            {
+                EndPCall();
+                throw e;
+            }            
         }
 
         public void PushValue(ValueType value)
@@ -328,8 +336,16 @@ namespace LuaInterface
 
         public void PushByteBuffer(byte[] buffer)
         {
-            luaState.PushByteBuffer(buffer);
-            ++argCount;
+            try
+            {
+                luaState.PushByteBuffer(buffer);
+                ++argCount;
+            }
+            catch(Exception e)
+            {
+                EndPCall();
+                throw e;
+            }
         }
 
         public double CheckNumber()

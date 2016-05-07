@@ -172,19 +172,16 @@ namespace LuaInterface
     public delegate int LuaCSFunction(IntPtr luaState);        
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void LuaHook(IntPtr L, ref Lua_Debug ar);
-    //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    //public delegate IntPtr LuaAlloc(IntPtr ud, IntPtr ptr, int osize, int nsize);
 #else
     public delegate int LuaCSFunction(IntPtr luaState);    
-    public delegate void LuaHook(IntPtr L, ref Lua_Debug ar);
-    //public delegate IntPtr LuaAlloc(IntPtr ud, IntPtr ptr, int osize, int nsize);
+    public delegate void LuaHook(IntPtr L, ref Lua_Debug ar);    
 #endif
 
     public class LuaDLL
     {
-        public static string version = "1.0.4.126";
+        public static string version = "1.0.5.149";
         public static int LUA_MULTRET = -1;
-        public static string[] LuaTypeName = { "none", "nil", "boolean", "lightuserdata", "number", "string", "table", "function", "userdata", "thread" };
+        public static string[] LuaTypeName = { "none", "nil", "boolean", "lightuserdata", "number", "string", "table", "function", "userdata", "thread" };        
 
 #if !UNITY_EDITOR && UNITY_IPHONE
         const string LUADLL = "__Internal";
@@ -216,8 +213,8 @@ namespace LuaInterface
         public static extern int luaopen_socket_core(IntPtr L);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luaopen_luasocket_scripts(IntPtr L);        
-
+        public static extern int luaopen_mime_core(IntPtr L);
+                   
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int luaopen_cjson(IntPtr L);
 
@@ -307,7 +304,7 @@ namespace LuaInterface
         }
 
         public static IntPtr lua_tolstring(IntPtr luaState, int index, out int strLen)               //[-0, +0, m]
-        {
+        {            
             return tolua_tolstring(luaState, index, out strLen);
         }
 
@@ -332,14 +329,19 @@ namespace LuaInterface
         public static extern void lua_pushnil(IntPtr luaState);
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_pushnumber(IntPtr luaState, double number);
-
+        
         public static void lua_pushinteger(IntPtr L, int n)
         {
             lua_pushnumber(L, n);
-        }                       
+        }                
 
         public static void lua_pushlstring(IntPtr luaState, byte[] str, int size)                   //[-0, +1, m]
         {
+            if (size >= 0x7fffff00)
+            {
+                throw new LuaException("string length overflow");
+            }
+
             tolua_pushlstring(luaState, str, size);
         }
 
@@ -676,7 +678,7 @@ namespace LuaInterface
                 t2 = luaL_typename(L, stackPos);
             }
 
-            string msg = string.Format("{1} expected, got {2}", stackPos - 1, tname, t2);
+            string msg = string.Format("{0} expected, got {1}", tname, t2);
             return luaL_argerror(L, stackPos, msg);
         }
 
@@ -729,7 +731,7 @@ namespace LuaInterface
 
         public static int luaL_checkinteger(IntPtr L, int stackPos)
         {
-            int d = lua_tointeger(L, stackPos);
+            int d = tolua_tointeger(L, stackPos);
 
             if (d == 0 && lua_isnumber(L, stackPos) == 0)
             {
@@ -855,16 +857,16 @@ namespace LuaInterface
             return lua_typename(luaState, type);
         }
 
-        public static int luaL_dofile(IntPtr luaState, string fileName)                                              //[-0, +1, e]
+        public static bool luaL_dofile(IntPtr luaState, string fileName)                                              //[-0, +1, e]
         {
             int result = luaL_loadfile(luaState, fileName);
 
             if (result != 0)
             {
-                return result;
+                return false;
             }
 
-            return LuaDLL.lua_pcall(luaState, 0, LUA_MULTRET, 0);
+            return LuaDLL.lua_pcall(luaState, 0, LUA_MULTRET, 0) == 0;
         }
 
         public static int luaL_dostring(IntPtr luaState, string chunk)
@@ -920,7 +922,7 @@ namespace LuaInterface
         public static extern IntPtr tolua_tag();
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void tolua_newudata(IntPtr luaState, int val);
+        public static extern void tolua_newudata(IntPtr luaState, int val);                         //[-0, +0, m]
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int tolua_rawnetobj(IntPtr luaState, int obj);
@@ -929,7 +931,7 @@ namespace LuaInterface
         public static extern bool tolua_pushudata(IntPtr L, int index);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool tolua_pushnewudata(IntPtr L, int metaRef, int index);
+        public static extern bool tolua_pushnewudata(IntPtr L, int metaRef, int index);             //[-0, +0, m]
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int tolua_beginpcall(IntPtr L, int reference);

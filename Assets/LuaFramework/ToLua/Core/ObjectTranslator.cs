@@ -37,7 +37,7 @@ namespace LuaInterface
             }
 
             public int id;
-            public UnityEngine.Object obj = null;
+            public UnityEngine.Object obj;
             public float time;
         }
 
@@ -71,7 +71,6 @@ namespace LuaInterface
         public ObjectTranslator()
         {
             LogGC = false;
-
 #if !MULTI_STATE
             _translator = this;
 #endif
@@ -123,7 +122,7 @@ namespace LuaInterface
             return objects.TryGetValue(udata);         
         }
 
-        //删除，但不移除一个lua对象(移除id只能由gc完成)
+        //预删除，但不移除一个lua对象(移除id只能由gc完成)
         public void Destroy(int udata)
         {            
             object o = objects.Destroy(udata);
@@ -161,9 +160,7 @@ namespace LuaInterface
 
         public void SetBack(int index, object o)
         {
-            object obj = objects.Replace(index, o);
-            objectsBackMap.Remove(obj);
-            objectsBackMap[o] = index;
+            objects.Replace(index, o);            
         }
 
         bool RemoveFromGCList(int id)

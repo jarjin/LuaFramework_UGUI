@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>tolua</string>
 	<key>CFBundleIdentifier</key>
-	<string>xlcw.{PRODUCT_NAME:rfc1034identifier}$</string>
+	<string>ameng.tolua</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -47,17 +47,17 @@
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>7C1002</string>
+	<string>7D175</string>
 	<key>DTPlatformVersion</key>
 	<string>GM</string>
 	<key>DTSDKBuild</key>
-	<string>15C43</string>
+	<string>15E60</string>
 	<key>DTSDKName</key>
 	<string>macosx10.11</string>
 	<key>DTXcode</key>
-	<string>0721</string>
+	<string>0730</string>
 	<key>DTXcodeBuild</key>
-	<string>7C1002</string>
+	<string>7D175</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2013 xlcw games. All rights reserved.</string>
 </dict>

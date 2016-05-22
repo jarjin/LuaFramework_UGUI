@@ -14,3 +14,5 @@ Assets/LuaFramework/ToLua/Source/Generate/
 Assembly-CSharp-Editor.csproj
 Assembly-CSharp.csproj
 Assets/.DS_Store
+TAGS
+obj/

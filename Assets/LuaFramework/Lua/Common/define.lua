@@ -21,6 +21,8 @@ TestProtoType = ProtocalType.BINARY;
 
 Util = LuaFramework.Util;
 AppConst = LuaFramework.AppConst;
+Test = LuaFramework.Test;
+
 LuaHelper = LuaFramework.LuaHelper;
 ByteBuffer = LuaFramework.ByteBuffer;
 

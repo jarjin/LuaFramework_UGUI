@@ -18,6 +18,11 @@ namespace LuaFramework {
             }
         }
 
+        public void ClosePanel(GameObject obj)
+        {
+            Destroy (obj);
+        }
+
 
 #if ASYNC_MODE
         /// <summary>
@@ -36,6 +41,7 @@ namespace LuaFramework {
                 if (Parent.FindChild(name) != null || prefab == null) {
                     return;
                 }
+
                 GameObject go = Instantiate(prefab) as GameObject;
                 go.name = assetName;
                 go.layer = LayerMask.NameToLayer("Default");

@@ -10,24 +10,32 @@ local sproto = require "3rd/sproto/sproto"
 local core = require "sproto.core"
 local print_r = require "3rd/sproto/print_r"
 
+require "Logic/Rogue"
 require "Logic/LuaClass"
 require "Logic/CtrlManager"
 require "Common/functions"
 require "Controller/PromptCtrl"
 
+
 --管理器--
 Game = {};
 local this = Game;
 
-local game; 
+local game;
 local transform;
 local gameObject;
 local WWW = UnityEngine.WWW;
 
+Game.state = 1;
+
+function Game.SetState(state)
+    this.state = state
+end
+
 function Game.InitViewPanels()
-	for i = 1, #PanelNames do
-		require ("View/"..tostring(PanelNames[i]))
-	end
+    for i = 1, #PanelNames do
+        require ("View/"..tostring(PanelNames[i]))
+    end
 end
 
 --初始化完成，发送链接服务器信息--
@@ -39,20 +47,34 @@ function Game.OnInitOK()
     --注册LuaView--
     this.InitViewPanels();
 
-    this.test_class_func();
-    this.test_pblua_func();
-    this.test_cjson_func();
-    this.test_pbc_func();
-    this.test_lpeg_func();
-    this.test_sproto_func();
-    coroutine.start(this.test_coroutine);
+    -- this.test_class_func();
+    -- this.test_pblua_func();
+    -- this.test_cjson_func();
+    -- this.test_pbc_func();
+    -- this.test_lpeg_func();
+    -- this.test_sproto_func();
+    -- coroutine.start(this.test_coroutine);
 
     CtrlManager.Init();
     local ctrl = CtrlManager.GetCtrl(CtrlNames.Prompt);
     if ctrl ~= nil and AppConst.ExampleMode then
         ctrl:Awake();
     end
-       
+
+    -- Application.LoadLevel("test")
+
+    -- Application.LoadLevel("test")
+    logWarn('LuaFramework show--->>>');
+
+    -- for i,v in ipairs(Test) do
+    --     logWarn(i)
+    -- end
+
+
+
+    Test.good = true
+    Rogue.Start()
+
     logWarn('LuaFramework InitOK--->>>');
 end
 
@@ -61,7 +83,7 @@ function Game.test_coroutine()
     logWarn("1111");
     coroutine.wait(1);	
     logWarn("2222");
-	
+
     local www = WWW("http://bbs.ulua.org/readme.txt");
     coroutine.www(www);
     logWarn(www.text);    	
@@ -71,24 +93,24 @@ end
 function Game.test_sproto_func()
     logWarn("test_sproto_func-------->>");
     local sp = sproto.parse [[
-    .Person {
+        .Person {
         name 0 : string
         id 1 : integer
         email 2 : string
 
         .PhoneNumber {
-            number 0 : string
-            type 1 : integer
+        number 0 : string
+        type 1 : integer
         }
 
         phone 3 : *PhoneNumber
-    }
+        }
 
-    .AddressBook {
+        .AddressBook {
         person 0 : *Person(id)
         others 1 : *Person
-    }
-    ]]
+        }
+        ]]
 
     local ab = {
         person = {
@@ -125,13 +147,13 @@ end
 
 --测试lpeg--
 function Game.test_lpeg_func()
-	logWarn("test_lpeg_func-------->>");
-	-- matches a word followed by end-of-string
-	local p = lpeg.R"az"^1 * -1
+    logWarn("test_lpeg_func-------->>");
+    -- matches a word followed by end-of-string
+    local p = lpeg.R"az"^1 * -1
 
-	print(p:match("hello"))        --> 6
-	print(lpeg.match(p, "hello"))  --> 6
-	print(p:match("1 hello"))      --> nil
+    print(p:match("hello"))        --> 6
+    print(lpeg.match(p, "hello"))  --> 6
+    print(p:match("1 hello"))      --> nil
 end
 
 --测试lua类--
@@ -212,5 +234,15 @@ end
 
 --销毁--
 function Game.OnDestroy()
-	--logWarn('OnDestroy--->>>');
+    --logWarn('OnDestroy--->>>');
+end
+
+function Game.Update()
+    -- logWarn('Update--->>>');
+    if(this.state == 1)
+    then
+        return
+    end
+
+    Rogue.Update()
 end

@@ -143,12 +143,21 @@ public static class ToLuaExport
         "UIWidget.showHandles",               
         "Input.IsJoystickPreconfigured",    
         "UIDrawCall.isActive",    
+        "Handheld.SetActivityIndicatorStyle",
+        "CanvasRenderer.OnRequestRebuild",
+        "CanvasRenderer.onRequestRebuild",
     };
 
     public static bool IsMemberFilter(MemberInfo mi)
     {
         return memberFilter.Contains(type.Name + "." + mi.Name);
     }
+    public static bool IsMemberFilter(Type t)
+    {
+        string name = LuaMisc.GetTypeName(t);
+        return memberFilter.Find((p) => { return name.Contains(p); }) != null;
+    }
+
 
     static ToLuaExport()
     {
@@ -281,7 +290,7 @@ public static class ToLuaExport
             flag = true;
         }
 
-        list.AddRange(type.GetMethods(BindingFlags.Instance | binding));
+        list.AddRange(type.GetMethods(BindingFlags.Instance | binding));        
 
         for (int i = list.Count - 1; i >= 0; --i)
         {           
@@ -423,6 +432,22 @@ public static class ToLuaExport
         return allTypes.IndexOf(t) < 0;        
     }
 
+    //是否为委托类型，没处理废弃
+    public static bool IsDelegateType(Type t)
+    {
+        if (!typeof(System.Delegate).IsAssignableFrom(t))
+        {
+            return false;
+        }        
+
+        if (IsMemberFilter(t))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     static void InitPropertyList()
     {
         props = type.GetProperties(BindingFlags.GetProperty | BindingFlags.SetProperty | BindingFlags.Instance | binding);
@@ -440,7 +465,7 @@ public static class ToLuaExport
             {
                 fieldList.RemoveAt(i);
             }
-            else if (typeof(System.Delegate).IsAssignableFrom(fieldList[i].FieldType))
+            else if (IsDelegateType(fieldList[i].FieldType))
             {
                 eventSet.Add(fieldList[i].FieldType);
             }
@@ -461,7 +486,7 @@ public static class ToLuaExport
             {
                 piList.RemoveAt(i);
             }
-            else if (typeof(System.Delegate).IsAssignableFrom(piList[i].PropertyType))
+            else if (IsDelegateType(piList[i].PropertyType))
             {
                 eventSet.Add(piList[i].PropertyType);
             }
@@ -489,7 +514,7 @@ public static class ToLuaExport
             {
                 evList.RemoveAt(i);
             }
-            else if (typeof(System.Delegate).IsAssignableFrom(evList[i].EventHandlerType))
+            else if (IsDelegateType(evList[i].EventHandlerType))
             {
                 eventSet.Add(evList[i].EventHandlerType);
             }
@@ -837,18 +862,78 @@ public static class ToLuaExport
         sb.AppendLineEx("\t}");
     }
 
+    //没有未知类型的模版类型List<int> 返回false, List<T>返回true
+    static bool IsGenericConstraintType(Type t)
+    {
+        if (!t.IsGenericType)
+        {
+            return t.IsGenericParameter;
+        }
+
+        Type[] types = t.GetGenericArguments();
+
+        for (int i = 0; i < types.Length; i++)
+        {
+            Type t1 = types[i];
+
+            if (t1.IsGenericParameter)
+            {
+                return true;
+            }
+
+            if (IsGenericConstraintType(t1))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static bool IsGenericConstraints(Type[] constraints)
+    {
+        for (int i = 0; i < constraints.Length; i++)
+        {
+            if (!IsGenericConstraintType(constraints[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     static bool IsGenericMethod(MethodInfo md)
     {
         if (md.IsGenericMethod)
         {
-            List<ParameterInfo> list = new List<ParameterInfo>(md.GetParameters());
             Type[] gts = md.GetGenericArguments();
+            List<ParameterInfo> list = new List<ParameterInfo>(md.GetParameters());
 
             for (int i = 0; i < gts.Length; i++)
             {
+                Type[] ts = gts[i].GetGenericParameterConstraints();
+
+                if (ts == null || ts.Length == 0 || IsGenericConstraints(ts))
+                {
+                    return true;
+                }
+
                 ParameterInfo p = list.Find((iter) => { return iter.ParameterType == gts[i]; });
 
-                if (p == null || p.ParameterType.BaseType == null || p.ParameterType.BaseType.IsGenericType) 
+                if (p == null)
+                {
+                    return true;
+                }
+
+                list.RemoveAll((iter) => { return iter.ParameterType == gts[i]; });
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {                
+                Type t = list[i].ParameterType;
+
+                if (IsGenericConstraintType(t))
                 {
                     return true;
                 }
@@ -925,6 +1010,11 @@ public static class ToLuaExport
         }
         else if (t.IsValueType)
         {
+            if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return "PushObject";
+            }
+
             return "PushValue";
         }
 
@@ -1620,6 +1710,10 @@ public static class ToLuaExport
             {
                 sb.AppendFormat("{3}{0} {1} = ({0})ToLua.CheckUnityObject(L, {2}, typeof({0}));\r\n", str, arg, stackPos, head);
             }
+            else if (varType.IsGenericType && varType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {          
+                sb.AppendFormat("{0}{1} {2} = ({1})ToLua.CheckVarObject(L, {3}, typeof({1}));\r\n", head, str, arg, stackPos);
+            }
             else
             {
                 sb.AppendFormat("{0}{1} {2} = ({1})ToLua.CheckObject(L, {3}, typeof({1}));\r\n", head, str, arg, stackPos);
@@ -1679,7 +1773,7 @@ public static class ToLuaExport
         List<Type> list = new List<Type>(md.GetGenericArguments());
 
         if (list.Contains(t))
-        {
+        {            
             return t.BaseType;
         }
 
@@ -3329,7 +3423,7 @@ public static class ToLuaExport
         {
             Type t = pifs[k].ParameterType;
 
-            if (typeof(System.MulticastDelegate).IsAssignableFrom(t))
+            if (IsDelegateType(t))
             {
                 eventSet.Add(t);
             }

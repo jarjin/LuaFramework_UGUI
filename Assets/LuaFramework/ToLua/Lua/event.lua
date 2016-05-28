@@ -101,17 +101,15 @@ end
 function _event:Remove(func, obj)
 	assert(func)
 
-	if self.lock then
-		local t = {func = func, obj = obj}
-		self.rmList:push(t)
-	else
-		for i, v in ilist(self.list) do							
-			if v.func == func and v.obj == obj then
+	for i, v in ilist(self.list) do							
+		if v.func == func and v.obj == obj then
+			if self.lock then
+				self.rmList:push({func = func, obj = obj})		
+			else
 				self.list:remove(i)
-				return
-			end 
+			end
 		end
-	end
+	end		
 end
 
 function _event:Count()
@@ -147,17 +145,6 @@ _event.__call = function(self, ...)
 	local _rmList = self.rmList
 	self.lock = true	
 
-	for _, v in ilist(_rmList) do					
-		for i, item in ilist(_list) do							
-			if v.func == item.func and v.obj == item.obj then
-				_list:remove(i)
-				break
-			end 
-		end
-	end
-
-	_rmList:clear()
-
 	for i, f in ilist(_list) do								
 		local flag, msg = f(...)
 		
@@ -169,6 +156,17 @@ _event.__call = function(self, ...)
 			error(msg)				
 		end
 	end
+
+	for _, v in ilist(_rmList) do					
+		for i, item in ilist(_list) do							
+			if v.func == item.func and v.obj == item.obj then
+				_list:remove(i)
+				break
+			end 
+		end
+	end
+
+	_rmList:clear()
 
 	self.lock = false			
 end

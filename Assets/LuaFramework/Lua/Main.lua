@@ -2,21 +2,8 @@
 function Main()					
 	 		
 end
-	
---逻辑update
-function Update(deltaTime, unscaledDeltaTime)
-	Time:SetDeltaTime(deltaTime, unscaledDeltaTime)				
-	UpdateBeat()			
-end
 
-function LateUpdate()	
-	LateUpdateBeat()	
-	CoUpdateBeat()	
-	Time:SetFrameCount()		
-end
-
---物理update
-function FixedUpdate(fixedDeltaTime)
-	Time:SetFixedDelta(fixedDeltaTime)
-	FixedUpdateBeat()
+--场景切换通知
+function OnLevelWasLoaded(level)
+	Time.timeSinceLevelLoad = 0
 end

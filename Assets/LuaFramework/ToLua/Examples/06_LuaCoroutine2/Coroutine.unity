@@ -181,7 +181,7 @@ GameObject:
   - 4: {fileID: 1707651805}
   - 114: {fileID: 1707651806}
   m_Layer: 0
-  m_Name: coroutine
+  m_Name: coroutine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

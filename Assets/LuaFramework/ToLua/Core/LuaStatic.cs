@@ -1,183 +1,151 @@
-﻿using System;
+﻿/*
+Copyright (c) 2015-2016 topameng(topameng@qq.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+using System;
 using System.IO;
+using System.Text;
 
 namespace LuaInterface
 {
     public static class LuaStatic
     {
-        static public void OpenLibs(IntPtr L)
+        public static int GetMetaReference(IntPtr L, Type t)
         {
-            LuaDLL.lua_atpanic(L, Panic);
-            LuaDLL.lua_pushstdcallcfunction(L, Print);
-            LuaDLL.lua_setfield(L, LuaIndexes.LUA_GLOBALSINDEX, "print");
-            LuaDLL.lua_pushstdcallcfunction(L, DoFile);
-            LuaDLL.lua_setfield(L, LuaIndexes.LUA_GLOBALSINDEX, "dofile");
-
-            //#if UNITY_EDITOR
-            //AddLuaLoader(L);
-            //#else   
-            AddLuaLoader2(L);
-            //#endif
+            LuaState state = LuaState.Get(L);
+            return state.GetMetaReference(t);
         }
 
-        static void AddLuaLoader(IntPtr L)
+        public static int GetMissMetaReference(IntPtr L, Type t)
         {
-            LuaDLL.lua_getglobal(L, "package");
-            LuaDLL.lua_getfield(L, -1, "loaders");
-            int pos = LuaDLL.lua_objlen(L, -1) + 1;
-            LuaDLL.lua_pushstdcallcfunction(L, Loader);
-            LuaDLL.lua_rawseti(L, -2, pos);
-            LuaDLL.lua_setfield(L, -2, "loaders");
-            LuaDLL.lua_pop(L, 1);
+            LuaState state = LuaState.Get(L);
+            return state.GetMissMetaReference(t);
         }
 
-        static void AddLuaLoader2(IntPtr L)
+        public static Type GetClassType(IntPtr L, int reference)
         {
-            LuaDLL.lua_getglobal(L, "package");
-            LuaDLL.lua_getfield(L, -1, "loaders");
-            int loaderTable = LuaDLL.lua_gettop(L);
-
-            for (int i = LuaDLL.lua_objlen(L, loaderTable) + 1; i > 1; i--)
-            {
-                LuaDLL.lua_rawgeti(L, loaderTable, i - 1);
-                LuaDLL.lua_rawseti(L, loaderTable, i);
-            }
-
-            LuaDLL.lua_pushstdcallcfunction(L, Loader);
-            LuaDLL.lua_rawseti(L, loaderTable, 1);
-
-            LuaDLL.lua_settop(L, 0);
+            LuaState state = LuaState.Get(L);
+            return state.GetClassType(reference);
         }
 
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int Panic(IntPtr L)
+        public static LuaFunction GetFunction(IntPtr L, int reference)
         {
-            string reason = String.Format("PANIC: unprotected error in call to Lua API ({0})", LuaDLL.lua_tostring(L, -1));
-            throw new LuaException(reason);
+            LuaState state = LuaState.Get(L);
+            return state.GetFunction(reference);
         }
 
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int Print(IntPtr L)
+        public static LuaTable GetTable(IntPtr L, int reference)
         {
-            int n = LuaDLL.lua_gettop(L);
-            string s = String.Empty;
-
-            for (int i = 1; i <= n; i++)
-            {
-                if (i > 1) s += "    ";
-
-                if (LuaDLL.lua_isstring(L, i) == 1)
-                {
-                    s += LuaDLL.lua_tostring(L, i);
-                }
-                else if (LuaDLL.lua_isnil(L, i))
-                {
-                    s += "nil";
-                }
-                else if (LuaDLL.lua_isboolean(L, i))
-                {
-                    s += LuaDLL.lua_toboolean(L, i) ? "true" : "false";
-                }
-                else
-                {
-                    IntPtr p = LuaDLL.lua_topointer(L, i);
-
-                    if (p == IntPtr.Zero)
-                    {
-                        s += "nil";
-                    }
-                    else
-                    {
-                        s += string.Format("{0}:0x{1}", LuaDLL.luaL_typename(L, i), p.ToString("X"));
-                    }
-                }
-            }
-
-            Debugger.Log(s);
-            return 0;
+            LuaState state = LuaState.Get(L);
+            return state.GetTable(reference);
         }
 
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int Loader(IntPtr L)
+        public static LuaThread GetLuaThread(IntPtr L, int reference)
         {
-            string fileName = LuaDLL.lua_tostring(L, 1);
-
-            if (!Path.HasExtension(fileName))
-            {
-                fileName += ".lua";
-            }
-
-            byte[] buffer = LuaFileUtils.Instance.ReadFile(fileName);
-
-            if (buffer == null)
-            {
-                return 0;
-            }
-
-            LuaDLL.luaL_loadbuffer(L, buffer, buffer.Length, fileName);
-            return 1;
+            LuaState state = LuaState.Get(L);
+            return state.GetLuaThread(reference);
         }
 
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        public static int DoFile(IntPtr L)
+        public static void GetUnpackRayRef(IntPtr L)
         {
-            string fileName = LuaDLL.lua_tostring(L, 1);
-
-            if (!Path.HasExtension(fileName))
-            {
-                fileName += ".lua";
-            }
-
-            int n = LuaDLL.lua_gettop(L);
-            byte[] text = LuaFileUtils.Instance.ReadFile(fileName);
-
-            if (text == null)
-            {
-                return 0;
-            }
-
-            if (LuaDLL.luaL_loadbuffer(L, text, text.Length, fileName) == 0)
-            {
-                LuaDLL.lua_call(L, 0, LuaDLL.LUA_MULTRET);
-            }
-
-            return LuaDLL.lua_gettop(L) - n;
+            LuaState state = LuaState.Get(L);
+            LuaDLL.lua_getref(L, state.UnpackRay);
         }
 
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        public static int traceback(IntPtr L)
+        public static void GetUnpackBounds(IntPtr L)
         {
-            int arg;
-            IntPtr L1;
+            LuaState state = LuaState.Get(L);
+            LuaDLL.lua_getref(L, state.UnpackBounds);
+        }
 
-            if (LuaDLL.lua_isthread(L, 1))
-            {
-                arg = 1;
-                L1 = LuaDLL.lua_tothread(L, 1);
-            }
-            else
-            {
-                arg = 0;
-                L1 = L;
-            }
+        public static void GetPackRay(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            LuaDLL.lua_getref(L, state.PackRay);
+        }
 
-            string msg = LuaDLL.lua_tostring(L, arg + 1);
+        public static void GetPackRaycastHit(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            LuaDLL.lua_getref(L, state.PackRaycastHit);
+        }
 
-            if (string.IsNullOrEmpty(msg))
-            {
-                LuaDLL.lua_pushvalue(L, arg + 1);
-            }
-            else
-            {
-                int level = (int)LuaDLL.luaL_optinteger(L, arg + 2, (L == L1) ? 1 : 0);
-                LuaDLL.lua_getref(L, 3);
-                LuaDLL.lua_pushthread(L1);
-                LuaDLL.lua_pushvalue(L, arg + 1);
-                LuaDLL.lua_pushnumber(L, level + 1);
-                LuaDLL.lua_call(L, 3, 1);                
-            }
+        public static void GetPackTouch(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            LuaDLL.lua_getref(L, state.PackTouch);
+        }
 
-            return 1;
+        public static void GetPackBounds(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            LuaDLL.lua_getref(L, state.PackBounds);
+        }
+
+        public static int GetOutMetatable(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            return state.OutMetatable;
+        }
+        
+        public static int GetArrayMetatable(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            return state.ArrayMetatable;
+        }
+
+        public static int GetTypeMetatable(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            return state.TypeMetatable;
+        }        
+
+        public static int GetDelegateMetatable(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            return state.DelegateMetatable;
+        }
+
+        public static int GetEventMetatable(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            return state.EventMetatable;
+        }
+
+        public static int GetIterMetatable(IntPtr L)
+        {
+            LuaState state = LuaState.Get(L);
+            return state.IterMetatable;
+        }
+
+        public static int GetEnumObject(IntPtr L, System.Enum e, out object obj)
+        {
+            LuaState state = LuaState.Get(L);
+            obj = state.GetEnumObj(e);
+            return state.EnumMetatable;
+        }        
+
+        public static LuaCSFunction GetPreModule(IntPtr L, Type t)
+        {
+            LuaState state = LuaState.Get(L);
+            return state.GetPreModule(t);
         }
     }
 }

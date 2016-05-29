@@ -9,9 +9,9 @@ public class TestPerformance : MonoBehaviour
     private string tips = "";
 
 	void Start () 
-    {        
-#if UNITY_5		
-		Application.logMessageReceived += ShowTips;
+    {
+#if UNITY_5
+        Application.logMessageReceived += ShowTips;
 #else
         Application.RegisterLogCallback(ShowTips);
 #endif         
@@ -19,10 +19,10 @@ public class TestPerformance : MonoBehaviour
         state = new LuaState();
         state.Start();
         LuaBinder.Bind(state);                       
-        state.DoFile("Test.lua");        
+        state.DoFile("TestPerf.lua");        
         state.LuaGC(LuaGCOptions.LUA_GCCOLLECT);
-        state.LogGC = true;        
-	}
+        state.LogGC = false;
+    }
 
     void ShowTips(string msg, string stackTrace, LogType type)
     {
@@ -33,7 +33,7 @@ public class TestPerformance : MonoBehaviour
     void OnDestroy()
     {
 #if UNITY_5		
-		Application.logMessageReceived -= ShowTips;
+        Application.logMessageReceived -= ShowTips;
 #else
         Application.RegisterLogCallback(null);
 #endif
@@ -112,16 +112,17 @@ public class TestPerformance : MonoBehaviour
         else if (GUI.Button(new Rect(50, 350, 120, 45), "Test4"))
         {
             float time = Time.realtimeSinceStartup;
-
-            for (int i = 0; i < 200000; i++)
+            
+            for (int i = 0; i < 20000; i++)
             {
                 new GameObject();
             }
 
             time = Time.realtimeSinceStartup - time;
             tips = "";
-            Debugger.Log("c# new GameObject cost time: " + time);             
+            Debugger.Log("c# new GameObject cost time: " + time);
 
+            //光gc了
             LuaFunction func = state.GetFunction("Test4");
             func.Call();         
             func.Dispose();
@@ -175,5 +176,8 @@ public class TestPerformance : MonoBehaviour
             func.Dispose();
             func = null;
         }
+
+        state.CheckTop();
+        state.Collect();
     }
 }

@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+Copyright (c) 2015-2016 topameng(topameng@qq.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Reflection;
@@ -32,6 +53,7 @@ namespace LuaInterface
         RaycastHit = 10,
     }
 
+    //让byte[] 压入成为lua string 而不是数组 userdata
     public class LuaByteBuffer
     {        
         public LuaByteBuffer(IntPtr source, int len)
@@ -86,23 +108,7 @@ namespace LuaInterface
         }
 
         public byte[] buffer = null;
-    }
-    
-    public class LuaException : Exception
-    {
-        public static string luaStack = null;
-
-        public LuaException(string msg)
-            : base(msg)
-        {            
-        }
-
-        public LuaException(string fmt, params object[] args)
-            : base(string.Format(fmt, args))
-        {
-
-        }
-    }
+    }   
 
     public class LuaOut<T> { }
     public class LuaOutMetatable { }
@@ -130,6 +136,11 @@ namespace LuaInterface
                 str += "[]";
                 return str;
             }
+            else if (t.IsByRef)
+            {
+                t = t.GetElementType();
+                return GetTypeName(t);
+            }
             else if (t.IsGenericType)
             {
                 return GetGenericName(t);
@@ -140,23 +151,26 @@ namespace LuaInterface
             }
             else
             {
-                return t.FullName;
+                string name = GetPrimitiveStr(t);
+                return name.Replace('+', '.');                
             }
         }
 
-        static string[] GetGenericName(Type[] types)
+        public static string[] GetGenericName(Type[] types, int offset, int count)
         {
-            string[] results = new string[types.Length];
+            string[] results = new string[count];
 
-            for (int i = 0; i < types.Length; i++)
+            for (int i = 0; i < count; i++)
             {
-                if (types[i].IsGenericType)
+                int pos = i + offset;
+
+                if (types[pos].IsGenericType)
                 {
-                    results[i] = GetGenericName(types[i]);
+                    results[i] = GetGenericName(types[pos]);
                 }
                 else
                 {
-                    results[i] = GetTypeName(types[i]);
+                    results[i] = GetTypeName(types[pos]);
                 }
 
             }
@@ -164,37 +178,192 @@ namespace LuaInterface
             return results;
         }
 
+        static string CombineTypeStr(string space, string name)
+        {
+            if (string.IsNullOrEmpty(space))
+            {
+                return name;
+            }
+            else
+            {
+                return space + "." + name;
+            }
+        }
+
         static string GetGenericName(Type t)
         {
             Type[] gArgs = t.GetGenericArguments();
             string typeName = t.FullName;
-            string pureTypeName = typeName.Substring(0, typeName.IndexOf('`'));            
+            int count = gArgs.Length;
+            int pos = typeName.IndexOf("[");
+            typeName = typeName.Substring(0, pos);
 
-            if (typeName.Contains("+"))
-            {
-                int pos1 = typeName.IndexOf("+");
-                int pos2 = typeName.IndexOf("[");
+            string str = null;
+            string name = null;
+            int offset = 0;
+            pos = typeName.IndexOf("+");
 
-                if (pos2 > pos1)
-                {
-                    string add = typeName.Substring(pos1 + 1, pos2 - pos1 - 1);
-                    return pureTypeName + "<" + string.Join(",", GetGenericName(gArgs)) + ">." + add;
-                }
-                else
-                {
-                    return pureTypeName + "<" + string.Join(",", GetGenericName(gArgs)) + ">";
-                }
-            }
-            else
+            while (pos > 0)
             {
-                return pureTypeName + "<" + string.Join(",", GetGenericName(gArgs)) + ">";
+                str = typeName.Substring(0, pos);
+                typeName = typeName.Substring(pos + 1);
+                pos = str.IndexOf('`');
+
+                if (pos > 0)
+                {
+                    count = (int)(str[pos + 1] - '0');
+                    str = str.Substring(0, pos);
+                    str += "<" + string.Join(",", GetGenericName(gArgs, offset, count)) + ">";
+                    offset += count;
+                }
+
+                name = CombineTypeStr(name, str);
+                pos = typeName.IndexOf("+");
             }
+
+            str = typeName;
+
+            if (offset < gArgs.Length)
+            {
+                pos = str.IndexOf('`');
+                count = (int)(str[pos + 1] - '0');
+                str = str.Substring(0, pos);
+                str += "<" + string.Join(",", GetGenericName(gArgs, offset, count)) + ">";
+            }
+
+            return CombineTypeStr(name, str);
         }
 
         public static Delegate GetEventHandler(object obj, Type t, string eventName)
         {
             FieldInfo eventField = t.GetField(eventName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             return (Delegate)eventField.GetValue(obj);
+        }
+
+        public static string GetPrimitiveStr(Type t)
+        {
+            if (t == typeof(System.Single))
+            {
+                return "float";
+            }
+            else if (t == typeof(System.String))
+            {
+                return "string";
+            }
+            else if (t == typeof(System.Int32))
+            {
+                return "int";
+            }
+            else if (t == typeof(System.Int64))
+            {
+                return "long";
+            }
+            else if (t == typeof(System.SByte))
+            {
+                return "sbyte";
+            }
+            else if (t == typeof(System.Byte))
+            {
+                return "byte";
+            }
+            else if (t == typeof(System.Int16))
+            {
+                return "short";
+            }
+            else if (t == typeof(System.UInt16))
+            {
+                return "ushort";
+            }
+            else if (t == typeof(System.Char))
+            {
+                return "char";
+            }
+            else if (t == typeof(System.UInt32))
+            {
+                return "uint";
+            }
+            else if (t == typeof(System.UInt64))
+            {
+                return "ulong";
+            }
+            else if (t == typeof(System.Decimal))
+            {
+                return "decimal";
+            }
+            else if (t == typeof(System.Double))
+            {
+                return "double";
+            }
+            else if (t == typeof(System.Boolean))
+            {
+                return "bool";
+            }
+            else if (t == typeof(System.Object))
+            {
+                return "object";
+            }
+            else
+            {
+                return t.ToString();
+            }
+        }
+
+        public static double ToDouble(object obj)
+        {
+            Type t = obj.GetType();
+
+            if (t == typeof(double) || t == typeof(float))
+            {
+                double d = Convert.ToDouble(obj);
+                return d;
+            }
+            else if (t == typeof(int))
+            {
+                int n = Convert.ToInt32(obj);
+                return (double)n;
+            }
+            else if (t == typeof(uint))
+            {
+                uint n = Convert.ToUInt32(obj);
+                return (double)n;
+            }
+            else if (t == typeof(long))
+            {
+                long n = Convert.ToInt64(obj);
+                return (double)n;
+            }
+            else if (t == typeof(ulong))
+            {
+                ulong n = Convert.ToUInt64(obj);
+                return (double)n;
+            }
+            else if (t == typeof(byte))
+            {
+                byte b = Convert.ToByte(obj);
+                return (double)b;
+            }
+            else if (t == typeof(sbyte))
+            {
+                sbyte b = Convert.ToSByte(obj);
+                return (double)b;
+            }
+            else if (t == typeof(char))
+            {
+                char c = Convert.ToChar(obj);
+                return (double)c;
+            }            
+            else if (t == typeof(short))
+            {
+                Int16 n = Convert.ToInt16(obj);
+                return (double)n;
+            }
+            else if (t == typeof(ushort))
+            {
+                UInt16 n = Convert.ToUInt16(obj);
+                return (double)n;
+            }
+
+            return 0;
         }
     }       
 
@@ -245,13 +414,6 @@ namespace LuaInterface
         public const int Rigidbody = 8;
         public const int Transform = 16;
         public const int ALL = 31;
-    }
-
-    public enum DestroyFlag
-    {
-        Destroy = 1,
-        DestroyImmediate = 2,
-        DestroyObject = 3,
     }
 
     public enum EventOp

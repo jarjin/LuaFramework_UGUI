@@ -5,15 +5,51 @@
 
 有问题请加：ulua技术交流群 434341400
 
-支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)/
-	  WP8(SimpleFramework_WP_v0.1.1 (nlua))/
+支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)
 
-视频教程地址 http://pan.baidu.com/s/1gd8fG4N
-游戏案例地址 http://www.ulua.org/showcase.html
-框架详细介绍 http://doc.ulua.org/default.asp
+**资料地址**<br>
+框架文档地址 http://doc.ulua.org/
+网盘下载地址 http://pan.baidu.com/s/1nu59wzJ
 tolua#地址： https://github.com/topameng/tolua
-tolua#底层库 https://github.com/topameng/tolua_runtime
+框架底层库:  https://github.com/jarjin/tolua_rumtime
 服务器框架:  https://github.com/jarjin/ServerFramework
+XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
+UnityHello:  https://github.com/woshihuo12/UnityHello
+
+//-------------2016-05-28-------------
+(1)更新tolua#到1.0.5.176版
+
+//-------------2016-05-07-------------
+(1)更新tolua#到1.0.5.152版 
+
+//-------------2016-04-17-------------
+(1)更新tolua#到1.0.4.126版
+
+//-------------2016-04-08-------------
+(1)更新tolua#到1.0.4.118版
+
+//-------------2016-03-25-------------
+(1)清理meta文件等问题。
+(2)更新tolua#到1.0.4.109版
+
+//-------------2016-03-22-------------
+(1)更新tolua#到1.0.4.102版
+
+//-------------2016-03-21-------------
+(1)更新tolua#到1.04.80版
+
+//-------------2016-03-15-------------
+(1)添加-fembed-bitcode标记支持BITCODE_MODE
+
+//-------------2016-03-12-------------
+(1)修复LuaLoop协同功能。
+(2)修复IOS上面加载luabundle大小写问题。
+
+//-------------2016-03-06-------------
+(1)更新tolua #到1.03版本
+
+//-------------2016-02-28-------------
+(1)修复ByteBuffer.cs的WriteBuffer函数
 
 //-------------2016-02-13-------------
 (1)重写资源管理器的异步加载模式，原来基于官方DEMO的版本在Lua跟c#同时请求同一份素材会存在加载BUG。

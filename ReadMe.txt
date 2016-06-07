@@ -16,6 +16,9 @@ tolua#地址： https://github.com/topameng/tolua
 XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 
+//-------------2016-06-07-------------
+(1)更新tolua#到1.0.5.180版
+
 //-------------2016-06-04-------------
 (1)更新tolua#到1.0.5.178版
 

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<doc>
+  <members>
+    <assembly>
+      <name>UnityEditor.UI</name>
+    </assembly>
+    <member name="T:UnityEditor.EventSystems.EventSystemEditor">
+      <summary>
+        <para>Custom Editor for the EventSystem Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.EventSystems.EventSystemEditor.HasPreviewGUI">
+      <summary>
+        <para>Can this component be previewed in its current state?</para>
+      </summary>
+      <returns>
+        <para>True if this component can be Previewed in its current state.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.EventSystems.EventSystemEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.EventSystems.EventSystemEditor.OnPreviewGUI(UnityEngine.Rect,UnityEngine.GUIStyle)">
+      <summary>
+        <para>Custom preview for Image component.</para>
+      </summary>
+      <param name="rect">Rectangle in which to draw the preview.</param>
+      <param name="background">Background image.</param>
+    </member>
+    <member name="M:UnityEditor.EventSystems.EventSystemEditor.RequiresConstantRepaint">
+      <summary>
+        <para>Does this edit require to be repainted constantly in its current state?</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.EventSystems.EventTriggerEditor">
+      <summary>
+        <para>Custom Editor for the EventTrigger Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.EventSystems.EventTriggerEditor.OnInspectorGUI">
+      <summary>
+        <para>Implement specific EventTrigger inspector GUI code here. If you want to simply extend the existing editor call the base OnInspectorGUI () before doing any custom GUI code.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.AnimationTriggersDrawer">
+      <summary>
+        <para>PropertyDrawer for AnimationTriggers.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.AspectRatioFitterEditor">
+      <summary>
+        <para>Custom Editor for the AspectRatioFitter component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.AspectRatioFitterEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.ButtonEditor">
+      <summary>
+        <para>Custom Editor for the Button Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ButtonEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.CanvasScalerEditor">
+      <summary>
+        <para>Custom Editor for the CanvasScaler component.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.ColorBlockDrawer">
+      <summary>
+        <para>PropertyDrawer for ColorBlock.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.ContentSizeFitterEditor">
+      <summary>
+        <para>Custom Editor for the ContentSizeFitter Component.
+</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ContentSizeFitterEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.DropdownEditor">
+      <summary>
+        <para>Custom editor for the Dropdown component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.DropdownEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.FontDataDrawer">
+      <summary>
+        <para>PropertyDrawer for FontData.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.FontDataDrawer.Init(UnityEditor.SerializedProperty)">
+      <summary>
+        <para>Initialize the serialized properties for the drawer.</para>
+      </summary>
+      <param name="property"></param>
+    </member>
+    <member name="T:UnityEditor.UI.GraphicEditor">
+      <summary>
+        <para>Extend this class to write your own graphic editor.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.GraphicEditor.AppearanceControlsGUI">
+      <summary>
+        <para>GUI related to the appearance of the graphic. Color and Material properties appear here.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.GraphicEditor.NativeSizeButtonGUI">
+      <summary>
+        <para>GUI for showing a button that sets the size of the RectTransform to the native size for this Graphic.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.GraphicEditor.OnDisable">
+      <summary>
+        <para>See MonoBehaviour.OnDisable.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.GraphicEditor.OnInspectorGUI">
+      <summary>
+        <para>Implement specific GraphicEditor inspector GUI code here. If you want to simply extend the existing editor call the base OnInspectorGUI () before doing any custom GUI code.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.GraphicEditor.RaycastControlsGUI">
+      <summary>
+        <para>GUI related to the Raycasting settings for the graphic.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.GraphicEditor.SetShowNativeSize(System.Boolean,System.Boolean)">
+      <summary>
+        <para>Set if the 'Set Native Size' button should be visible for this editor.</para>
+      </summary>
+      <param name="show"></param>
+      <param name="instant"></param>
+    </member>
+    <member name="T:UnityEditor.UI.GridLayoutGroupEditor">
+      <summary>
+        <para>Custom Editor for the GridLayout Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.GridLayoutGroupEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.HorizontalOrVerticalLayoutGroupEditor">
+      <summary>
+        <para>The Editor for the HorizontalOrVerticalLayoutGroup class.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.HorizontalOrVerticalLayoutGroupEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.ImageEditor">
+      <summary>
+        <para>Custom Editor for the Image Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ImageEditor.GetInfoString">
+      <summary>
+        <para>A string cointaining the Image details to be used as a overlay on the component Preview.</para>
+      </summary>
+      <returns>
+        <para>The Image details.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.UI.ImageEditor.HasPreviewGUI">
+      <summary>
+        <para>Can this component be Previewed in its current state?</para>
+      </summary>
+      <returns>
+        <para>True if this component can be Previewed in its current state.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.UI.ImageEditor.OnDisable">
+      <summary>
+        <para>See MonoBehaviour.OnDisable.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ImageEditor.OnInspectorGUI">
+      <summary>
+        <para>Implement specific ImageEditor inspector GUI code here. If you want to simply extend the existing editor call the base OnInspectorGUI () before doing any custom GUI code.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ImageEditor.OnPreviewGUI(UnityEngine.Rect,UnityEngine.GUIStyle)">
+      <summary>
+        <para>Custom preview for Image component.</para>
+      </summary>
+      <param name="rect">Rectangle in which to draw the preview.</param>
+      <param name="background">Background image.</param>
+    </member>
+    <member name="M:UnityEditor.UI.ImageEditor.SpriteGUI">
+      <summary>
+        <para>GUI for showing the Sprite property.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ImageEditor.TypeGUI">
+      <summary>
+        <para>GUI for showing the image type and associated settings.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.InputFieldEditor">
+      <summary>
+        <para>Custom Editor for the InputField Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.InputFieldEditor.OnInspectorGUI">
+      <summary>
+        <para>See: Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.LayoutElementEditor">
+      <summary>
+        <para>Editor for the LayoutElement component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.LayoutElementEditor.OnInspectorGUI">
+      <summary>
+        <para>See: Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.NavigationDrawer">
+      <summary>
+        <para>PropertyDrawer for Navigation.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.RawImageEditor">
+      <summary>
+        <para>Custom editor for RawImage.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.RawImageEditor.GetInfoString">
+      <summary>
+        <para>A string cointaining the Image details to be used as a overlay on the component Preview.</para>
+      </summary>
+      <returns>
+        <para>The RawImage details.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.UI.RawImageEditor.HasPreviewGUI">
+      <summary>
+        <para>Can this component be Previewed in its current state?</para>
+      </summary>
+      <returns>
+        <para>True if this component can be Previewed in its current state.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEditor.UI.RawImageEditor.OnInspectorGUI">
+      <summary>
+        <para>Implement specific RawImage inspector GUI code here. If you want to simply extend the existing editor call the base OnInspectorGUI () before doing any custom GUI code.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.RawImageEditor.OnPreviewGUI(UnityEngine.Rect,UnityEngine.GUIStyle)">
+      <summary>
+        <para>Custom preview for Image component.</para>
+      </summary>
+      <param name="rect">Rectangle in which to draw the preview.</param>
+      <param name="background">Background image.</param>
+    </member>
+    <member name="T:UnityEditor.UI.ScrollbarEditor">
+      <summary>
+        <para>Custom Editor for the Scrollbar Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ScrollbarEditor.OnInspectorGUI">
+      <summary>
+        <para>See: Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.ScrollRectEditor">
+      <summary>
+        <para>Editor for the ScrollRect component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ScrollRectEditor.OnDisable">
+      <summary>
+        <para>See MonoBehaviour.OnDisable.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ScrollRectEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.SelectableEditor">
+      <summary>
+        <para>Custom Editor for the Selectable Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.SelectableEditor.OnDisable">
+      <summary>
+        <para>See MonoBehaviour.OnDisable.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.SelectableEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.SelfControllerEditor">
+      <summary>
+        <para>Base class for custom editors that are for components that implement the SelfControllerEditor interface.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.SelfControllerEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.SliderEditor">
+      <summary>
+        <para>Custom Editor for the Slider Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.SliderEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.SpriteStateDrawer">
+      <summary>
+        <para>PropertyDrawer for SpriteState.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.TextEditor">
+      <summary>
+        <para>Custom Editor for the Text Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.TextEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEditor.UI.ToggleEditor">
+      <summary>
+        <para>Custom Editor for the Toggle Component.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEditor.UI.ToggleEditor.OnInspectorGUI">
+      <summary>
+        <para>See Editor.OnInspectorGUI.</para>
+      </summary>
+    </member>
+  </members>
+</doc>

@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 1958791496
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2d267c5b3c0b7ae57f9606c22249cdf6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/Lua/events.lua.bytes
+- Assets/Lua/Main.lua.bytes
+- Assets/Lua/eventlib.lua.bytes
+- Assets/Lua/tolua.lua.bytes
+Dependencies: []

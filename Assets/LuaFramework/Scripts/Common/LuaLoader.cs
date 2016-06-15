@@ -31,7 +31,7 @@ namespace LuaFramework {
         public void AddBundle(string bundleName) {
             string url = Util.DataPath + bundleName.ToLower();
             if (File.Exists(url)) {
-                AssetBundle bundle = AssetBundle.CreateFromFile(url);
+                AssetBundle bundle = AssetBundle.LoadFromFile(url);
                 if (bundle != null)
                 {
                     bundleName = bundleName.Replace("Lua/", "");

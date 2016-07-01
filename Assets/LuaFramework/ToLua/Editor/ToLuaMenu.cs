@@ -31,6 +31,7 @@ using System.Reflection;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using LuaInterface;
 
 using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
@@ -142,6 +143,11 @@ public static class ToLuaMenu
 
         public BindType(Type t)
         {
+            if (typeof(System.MulticastDelegate).IsAssignableFrom(t))
+            {
+                throw new NotSupportedException(string.Format("\nDon't export Delegate {0} as a class, register it in customDelegateList", LuaMisc.GetTypeName(t)));
+            }
+
             type = t;                        
             nameSpace = ToLuaExport.GetNameSpace(t, out libName);
             name = ToLuaExport.CombineTypeStr(nameSpace, libName);            
@@ -468,7 +474,7 @@ public static class ToLuaMenu
         return tree;
     }
 
-   static void AddSpaceNameToTree(ToLuaTree<string> tree, ToLuaNode<string> parent, string space)
+    static void AddSpaceNameToTree(ToLuaTree<string> tree, ToLuaNode<string> parent, string space)
     {
         if (space == null || space == string.Empty)
         {
@@ -479,11 +485,11 @@ public static class ToLuaMenu
 
         for (int j = 0; j < ns.Length; j++)
         {
-            var nodes = tree.Find((_t) => { return _t == ns[j]; }, j);
+            List<ToLuaNode<string>> nodes = tree.Find((_t) => { return _t == ns[j]; }, j);
 
             if (nodes.Count == 0)
             {
-                var node = new ToLuaNode<string>();
+                ToLuaNode<string> node = new ToLuaNode<string>();
                 node.value = ns[j];
                 parent.childs.Add(node);
                 node.parent = parent;
@@ -492,32 +498,35 @@ public static class ToLuaMenu
             }
             else
             {
-                var flag = false;
-                var index = 0;
+                bool flag = false;
+                int index = 0;
+
                 for (int i = 0; i < nodes.Count; i++)
                 {
-                    var count = j;
-                    var size = j;
-                    var nodecopy = nodes[i];
+                    int count = j;
+                    int size = j;
+                    ToLuaNode<string> nodecopy = nodes[i];
+
                     while (nodecopy.parent != null)
                     {
                         nodecopy = nodecopy.parent;
                         if (nodecopy.value != null && nodecopy.value == ns[--count])
                         {
                             size--;
-            }
-        }
+                        }
+                    }
+
                     if (size == 0)
                     {
                         index = i;
                         flag = true;
                         break;
-    }
+                    }
                 }
 
                 if (!flag)
                 {
-                    var nnode = new ToLuaNode<string>();
+                    ToLuaNode<string> nnode = new ToLuaNode<string>();
                     nnode.value = ns[j];
                     nnode.layer = j;
                     nnode.parent = parent;
@@ -580,12 +589,15 @@ public static class ToLuaMenu
 
         List<BindType> backupList = new List<BindType>();
         backupList.AddRange(allTypes);
+        ToLuaNode<string> root = tree.GetRoot();
 
         foreach (Type t in set)
         {
             if (null == list.Find((p) => { return p.type == t; }))
             {
-                list.Add(new DelegateType(t));
+                DelegateType dt = new DelegateType(t);                
+                AddSpaceNameToTree(tree, root, dt.type.Namespace);
+                list.Add(dt);
             }
         }
 
@@ -601,17 +613,7 @@ public static class ToLuaMenu
         sb.AppendLineEx("\t\tfloat t = Time.realtimeSinceStartup;");
         sb.AppendLineEx("\t\tL.BeginModule(null);");
 
-        for (int i = 0; i < allTypes.Count; i++)
-        {
-            Type dt = CustomSettings.dynamicList.Find((p) => { return allTypes[i].type == p; });
-
-            if (dt == null && allTypes[i].nameSpace == null)
-            {
-                string str = "\t\t" + allTypes[i].wrapName + "Wrap.Register(L);\r\n";
-                sb.Append(str);
-                allTypes.RemoveAt(i--);                
-            }
-        }        
+        GenRegisterInfo(null, sb, list, dtList);
 
         Action<ToLuaNode<string>> begin = (node) =>
         {
@@ -623,35 +625,7 @@ public static class ToLuaMenu
             sb.AppendFormat("\t\tL.BeginModule(\"{0}\");\r\n", node.value);
             string space = GetSpaceNameFromTree(node);
 
-            for (int i =0; i < allTypes.Count; i++)
-            {
-                Type dt = CustomSettings.dynamicList.Find((p) => { return allTypes[i].type == p; });
-
-                if (dt == null && allTypes[i].nameSpace == space)
-                {
-                    string str = "\t\t" + allTypes[i].wrapName + "Wrap.Register(L);\r\n";
-                    sb.Append(str);
-                    allTypes.RemoveAt(i--);
-                }
-            }
-
-            string funcName = null;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                DelegateType dt = list[i];
-                Type type = dt.type;
-                string typeSpace = ToLuaExport.GetNameSpace(type, out funcName);
-
-                if (typeSpace == space)
-                {                    
-                    funcName = ToLuaExport.ConvertToLibSign(funcName);
-                    string abr = dt.abr;
-                    abr = abr == null ? funcName : abr;
-                    sb.AppendFormat("\t\tL.RegFunction(\"{0}\", {1});\r\n", abr, dt.name);
-                    dtList.Add(dt);
-                }
-            }
+            GenRegisterInfo(space, sb, list, dtList);
         };
 
         Action<ToLuaNode<string>> end = (node) =>
@@ -711,6 +685,39 @@ public static class ToLuaMenu
 
         AssetDatabase.Refresh();
         Debugger.Log("Generate LuaBinder over !");
+    }
+
+    static void GenRegisterInfo(string nameSpace, StringBuilder sb, List<DelegateType> delegateList, List<DelegateType> wrappedDelegatesCache)
+    {
+        for (int i = 0; i < allTypes.Count; i++)
+        {
+            Type dt = CustomSettings.dynamicList.Find((p) => { return allTypes[i].type == p; });
+
+            if (dt == null && allTypes[i].nameSpace == nameSpace)
+            {
+                string str = "\t\t" + allTypes[i].wrapName + "Wrap.Register(L);\r\n";
+                sb.Append(str);
+                allTypes.RemoveAt(i--);
+            }
+        }
+
+        string funcName = null;
+
+        for (int i = 0; i < delegateList.Count; i++)
+        {
+            DelegateType dt = delegateList[i];
+            Type type = dt.type;
+            string typeSpace = ToLuaExport.GetNameSpace(type, out funcName);
+
+            if (typeSpace == nameSpace)
+            {
+                funcName = ToLuaExport.ConvertToLibSign(funcName);
+                string abr = dt.abr;
+                abr = abr == null ? funcName : abr;
+                sb.AppendFormat("\t\tL.RegFunction(\"{0}\", {1});\r\n", abr, dt.name);
+                wrappedDelegatesCache.Add(dt);
+            }
+        }
     }
 
     static void GenPreLoadFunction(BindType bt, StringBuilder sb)

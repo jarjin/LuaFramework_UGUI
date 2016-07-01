@@ -118,6 +118,7 @@ public static class ToLuaExport
     public static List<string> memberFilter = new List<string>
     {
         "String.Chars",
+        "Directory.SetAccessControl",
         "AnimationClip.averageDuration",
         "AnimationClip.averageAngularSpeed",
         "AnimationClip.averageSpeed",
@@ -1630,7 +1631,7 @@ public static class ToLuaExport
         {
             sb.AppendFormat("{0}LuaByteBuffer {1} = new LuaByteBuffer(ToLua.{2}ByteBuffer(L, {3}));\r\n", head, arg, checkStr, stackPos);
         }
-        else if (varType.IsArray)
+        else if (varType.IsArray && varType.GetArrayRank() == 1)
         {
             Type et = varType.GetElementType();
             string atstr = GetTypeStr(et);
@@ -2356,9 +2357,8 @@ public static class ToLuaExport
         }
         else if (t.IsArray)
         {
-            t = t.GetElementType();
-            string str = GetTypeStr(t);
-            str += "[]";
+            string str = GetTypeStr(t.GetElementType());
+            str += LuaMisc.GetArrayRank(t);
             return str;
         }
         else if(t == extendType)
@@ -2839,9 +2839,11 @@ public static class ToLuaExport
             }
             else
             {
-                sb.AppendFormat("{0}{{\r\n{0}\tfunc.Call();\r\n", head);
-                GenLuaFunctionRetValue(sb, mi.ReturnType, head, "ret");
-                sb.AppendLineEx(head + "\treturn ret;");            
+                sb.AppendFormat("{0}{{\r\n{0}\tfunc.BeginPCall();\r\n", head);
+                sb.AppendFormat("{0}\tfunc.PCall();\r\n", head);
+                GenLuaFunctionRetValue(sb, mi.ReturnType, head + "\t", "ret");
+                sb.AppendFormat("{0}\tfunc.EndPCall();\r\n", head);
+                sb.AppendLineEx(head + "\treturn ret;");
                 sb.AppendFormat("{0}}};\r\n", head);
             }
 
@@ -2930,8 +2932,10 @@ public static class ToLuaExport
             }
             else
             {
-                sb.AppendFormat("{0}{{\r\n{0}\tfunc.Call();\r\n", head);
-                GenLuaFunctionRetValue(sb, mi.ReturnType, head, "ret");
+                sb.AppendFormat("{0}{{\r\n{0}\tfunc.BeginPCall();\r\n", head);
+                sb.AppendFormat("{0}\tfunc.PCall();\r\n", head);
+                GenLuaFunctionRetValue(sb, mi.ReturnType, head + "\t", "ret");
+                sb.AppendFormat("{0}\tfunc.EndPCall();\r\n", head);
                 sb.AppendLineEx(head + "\treturn ret;");
                 sb.AppendFormat("{0}}}\r\n", head);
             }
@@ -3107,9 +3111,10 @@ public static class ToLuaExport
         {
             Type t = attrs[j].GetType() ;
 
-            if (t == typeof(System.ObsoleteAttribute) || t == typeof(NoToLuaAttribute) || t == typeof(MonoPInvokeCallbackAttribute)) // || t.ToString() == "UnityEngine.WrapperlessIcall")
+            if (t == typeof(System.ObsoleteAttribute) || t == typeof(NoToLuaAttribute) || t == typeof(MonoPInvokeCallbackAttribute) ||
+                t.Name == "MonoNotSupportedAttribute" || t.Name == "MonoTODOAttribute") // || t.ToString() == "UnityEngine.WrapperlessIcall")
             {
-                return true;               
+                return true;
             }
         }
 

@@ -11,6 +11,7 @@ public class Base : MonoBehaviour {
     private SoundManager m_SoundMgr;
     private TimerManager m_TimerMgr;
     private ThreadManager m_ThreadMgr;
+    private ObjectPoolManager m_ObjectPoolMgr;
 
     /// <summary>
     /// 注册消息
@@ -92,6 +93,15 @@ public class Base : MonoBehaviour {
                 m_ThreadMgr = facade.GetManager<ThreadManager>(ManagerName.Thread);
             }
             return m_ThreadMgr;
+        }
+    }
+
+    protected ObjectPoolManager ObjPoolManager {
+        get {
+            if (m_ObjectPoolMgr == null) {
+                m_ObjectPoolMgr = facade.GetManager<ObjectPoolManager>(ManagerName.ObjectPool);
+            }
+            return m_ObjectPoolMgr;
         }
     }
 }

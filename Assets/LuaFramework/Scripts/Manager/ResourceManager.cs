@@ -21,6 +21,7 @@ namespace LuaFramework {
 
     public class ResourceManager : Manager {
         string m_BaseDownloadingURL = "";
+        string[] m_AllManifest = null;
         AssetBundleManifest m_AssetBundleManifest = null;
         Dictionary<string, string[]> m_Dependencies = new Dictionary<string, string[]>();
         Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
@@ -39,6 +40,7 @@ namespace LuaFramework {
             LoadAsset<AssetBundleManifest>(manifestName, new string[] { "AssetBundleManifest" }, delegate(UObject[] objs) {
                 if (objs.Length > 0) {
                     m_AssetBundleManifest = objs[0] as AssetBundleManifest;
+                    m_AllManifest = m_AssetBundleManifest.GetAllAssetBundles();
                 }
                 if (initOK != null) initOK();
             });
@@ -67,12 +69,12 @@ namespace LuaFramework {
             if (abName.Contains("/")) {
                 return abName;
             }
-            string[] paths = m_AssetBundleManifest.GetAllAssetBundles();
-            for (int i = 0; i < paths.Length; i++) {
-                int index = paths[i].LastIndexOf('/');
-                string path = paths[i].Remove(0, index + 1);
+            //string[] paths = m_AssetBundleManifest.GetAllAssetBundles();  产生GC，需要缓存结果
+            for (int i = 0; i < m_AllManifest.Length; i++) {
+                int index = m_AllManifest[i].LastIndexOf('/');  
+                string path = m_AllManifest[i].Remove(0, index + 1);    //字符串操作函数都会产生GC
                 if (path.Equals(abName)) {
-                    return paths[i];
+                    return m_AllManifest[i];
                 }
             }
             Debug.LogError("GetRealAssetPath Error:>>" + abName);
@@ -196,32 +198,40 @@ namespace LuaFramework {
             return bundle;
         }
 
-        public void UnloadAssetBundle(string abName) {
+        /// <summary>
+        /// 此函数交给外部卸载专用，自己调整是否需要彻底清除AB
+        /// </summary>
+        /// <param name="abName"></param>
+        /// <param name="isThorough"></param>
+        public void UnloadAssetBundle(string abName, bool isThorough = false) {
             abName = GetRealAssetPath(abName);
             Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
-            UnloadAssetBundleInternal(abName);
-            UnloadDependencies(abName);
+            UnloadAssetBundleInternal(abName, isThorough);
+            UnloadDependencies(abName, isThorough);
             Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
         }
 
-        void UnloadDependencies(string abName) {
+        void UnloadDependencies(string abName, bool isThorough) {
             string[] dependencies = null;
             if (!m_Dependencies.TryGetValue(abName, out dependencies))
                 return;
 
             // Loop dependencies.
             foreach (var dependency in dependencies) {
-                UnloadAssetBundleInternal(dependency);
+                UnloadAssetBundleInternal(dependency, isThorough);
             }
             m_Dependencies.Remove(abName);
         }
 
-        void UnloadAssetBundleInternal(string abName) {
+        void UnloadAssetBundleInternal(string abName, bool isThorough) {
             AssetBundleInfo bundle = GetLoadedAssetBundle(abName);
             if (bundle == null) return;
 
-            if (--bundle.m_ReferencedCount == 0) {
-                bundle.m_AssetBundle.Unload(false);
+            if (--bundle.m_ReferencedCount <= 0) {
+                if (m_LoadRequests.ContainsKey(abName)) {
+                    return;     //如果当前AB处于Async Loading过程中，卸载会崩溃，只减去引用计数即可
+                }
+                bundle.m_AssetBundle.Unload(isThorough);
                 m_LoadedAssetBundles.Remove(abName);
                 Debug.Log(abName + " has been unloaded successfully");
             }

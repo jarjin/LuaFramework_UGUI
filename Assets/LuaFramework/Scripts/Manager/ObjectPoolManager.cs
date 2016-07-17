@@ -38,7 +38,7 @@ namespace LuaFramework {
             return null;
         }
 
-        public GameObject GetObject(string poolName) {
+        public GameObject Get(string poolName) {
             GameObject result = null;
             if (m_GameObjectPools.ContainsKey(poolName)) {
                 GameObjectPool pool = m_GameObjectPools[poolName];
@@ -52,7 +52,7 @@ namespace LuaFramework {
             return result;
         }
 
-        public void PushObject(string poolName, GameObject go) {
+        public void Release(string poolName, GameObject go) {
             if (m_GameObjectPools.ContainsKey(poolName)) {
                 GameObjectPool pool = m_GameObjectPools[poolName];
                 pool.ReturnObjectToPool(poolName, go);
@@ -63,30 +63,32 @@ namespace LuaFramework {
 
         ///-----------------------------------------------------------------------------------------------
 
-        public ObjectPool<T> CreatePool<T>(string poolName, UnityAction<T> actionOnGet, UnityAction<T> actionOnRelease) where T : class {
+        public ObjectPool<T> CreatePool<T>(UnityAction<T> actionOnGet, UnityAction<T> actionOnRelease) where T : class {
+            var type = typeof(T);
             var pool = new ObjectPool<T>(actionOnGet, actionOnRelease);
-            m_ObjectPools[poolName] = pool;
+            m_ObjectPools[type.Name] = pool;
             return pool;
         }
 
-        public ObjectPool<T> GetPool<T>(string poolName) where T : class {
+        public ObjectPool<T> GetPool<T>() where T : class {
+            var type = typeof(T);
             ObjectPool<T> pool = null;
-            if (m_ObjectPools.ContainsKey(poolName)) {
-                pool = m_ObjectPools[poolName] as ObjectPool<T>;
+            if (m_ObjectPools.ContainsKey(type.Name)) {
+                pool = m_ObjectPools[type.Name] as ObjectPool<T>;
             }
             return pool;
         }
 
-        public T GetObject<T>(string poolName) where T : class {
-            var pool = GetPool<T>(poolName);
+        public T Get<T>() where T : class {
+            var pool = GetPool<T>();
             if (pool != null) {
                 return pool.Get();
             }
             return default(T);
         }
 
-        public void PushObject<T>(string poolName, T obj) where T : class {
-            var pool = GetPool<T>(poolName);
+        public void Release<T>(T obj) where T : class {
+            var pool = GetPool<T>();
             if (pool != null) {
                 pool.Release(obj);
             }

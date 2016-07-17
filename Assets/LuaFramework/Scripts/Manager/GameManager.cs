@@ -240,14 +240,14 @@ namespace LuaFramework {
             initialize = true;
 
             //类对象池测试
-            var classObjPool = ObjPoolManager.CreatePool<TestObjectClass>("TestObjectClass", null, null);
+            var classObjPool = ObjPoolManager.CreatePool<TestObjectClass>(OnPoolGetElement, OnPoolPushElement);
             //方法1
             //objPool.Release(new TestObjectClass("abcd", 100, 200f));
             //var testObj1 = objPool.Get();
 
             //方法2
-            ObjPoolManager.PushObject<TestObjectClass>("TestObjectClass", new TestObjectClass("abcd", 100, 200f));
-            var testObj1 = ObjPoolManager.GetObject<TestObjectClass>("TestObjectClass");
+            ObjPoolManager.Release<TestObjectClass>(new TestObjectClass("abcd", 100, 200f));
+            var testObj1 = ObjPoolManager.Get<TestObjectClass>();
 
             Debugger.Log("TestObjectClass--->>>" + testObj1.ToString());
 
@@ -260,11 +260,27 @@ namespace LuaFramework {
             gameObj.transform.localScale = Vector3.one;
             gameObj.transform.localPosition = Vector3.zero;
 
-            ObjPoolManager.PushObject("TestGameObject", gameObj);
-            var backObj = ObjPoolManager.GetObject("TestGameObject");
+            ObjPoolManager.Release("TestGameObject", gameObj);
+            var backObj = ObjPoolManager.Get("TestGameObject");
             backObj.transform.SetParent(null);
 
             Debug.Log("TestGameObject--->>>" + backObj);
+        }
+
+        /// <summary>
+        /// 当从池子里面获取时
+        /// </summary>
+        /// <param name="obj"></param>
+        void OnPoolGetElement(TestObjectClass obj) {
+            Debug.Log("OnPoolGetElement--->>>" + obj);
+        }
+
+        /// <summary>
+        /// 当放回池子里面时
+        /// </summary>
+        /// <param name="obj"></param>
+        void OnPoolPushElement(TestObjectClass obj) {
+            Debug.Log("OnPoolPushElement--->>>" + obj);
         }
 
         /// <summary>

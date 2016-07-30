@@ -16,6 +16,9 @@ tolua#地址： https://github.com/topameng/tolua
 XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 
+//-------------2016-07-30-------------
+(1)更新tolua#到1.0.5.214版
+
 //-------------2016-07-16-------------
 (1)更新tolua#到1.0.5.208版
 (2)修改资源管理器，减少GC与修正卸载某个AB正处于异步加载中导致崩溃的BUG

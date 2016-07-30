@@ -49,7 +49,7 @@ function Game.OnInitOK()
 
     CtrlManager.Init();
     local ctrl = CtrlManager.GetCtrl(CtrlNames.Prompt);
-    if ctrl ~= nil and AppConst.ExampleMode then
+    if ctrl ~= nil and AppConst.ExampleMode == 1 then
         ctrl:Awake();
     end
        

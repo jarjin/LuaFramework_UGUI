@@ -7,8 +7,14 @@ namespace LuaFramework {
     /// </summary>
     public class Main : MonoBehaviour {
 
-        void Start() {
+        void Start()
+        {
             AppFacade.Instance.StartUp();   //启动游戏
+        }
+
+        void Update()
+        {
+            Util.CallMethod("Game", "Update");     //初始化完成
         }
     }
 }

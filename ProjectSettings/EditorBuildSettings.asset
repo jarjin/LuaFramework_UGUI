@@ -7,3 +7,5 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/LuaFramework/Scenes/main.unity
+  - enabled: 1
+    path: Assets/LuaFramework/Scenes/test.unity

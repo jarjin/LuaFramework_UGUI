@@ -131,7 +131,7 @@ namespace LuaFramework {
         /// 调用方法
         /// </summary>
         void OnExtractFile(List<object> evParams) {
-            Debugger.LogWarning("Thread evParams: >>" + evParams.Count);
+            UnityEngine.Debug.LogWarning("Thread evParams: >>" + evParams.Count);
 
             ///------------------通知更新面板解压完成--------------------
             NotiData data = new NotiData(NotiConst.UPDATE_DOWNLOAD, null);

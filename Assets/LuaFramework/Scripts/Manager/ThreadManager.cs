@@ -31,7 +31,7 @@ namespace LuaFramework {
         private Stopwatch sw = new Stopwatch();
         private string currDownFile = string.Empty;
 
-        static readonly object m_lockObj = new object();
+        static readonly object m_lockObject = new object();
         static Queue<ThreadEvent> events = new Queue<ThreadEvent>();
 
         delegate void ThreadSyncEvent(NotiData data);
@@ -51,7 +51,7 @@ namespace LuaFramework {
         /// 添加到事件队列
         /// </summary>
         public void AddEvent(ThreadEvent ev, Action<NotiData> func) {
-            lock (m_lockObj) {
+            lock (m_lockObject) {
                 this.func = func;
                 events.Enqueue(ev);
             }
@@ -69,7 +69,7 @@ namespace LuaFramework {
         // Update is called once per frame
         void OnUpdate() {
             while (true) {
-                lock (m_lockObj) {
+                lock (m_lockObject) {
                     if (events.Count > 0) {
                         ThreadEvent e = events.Dequeue();
                         try {

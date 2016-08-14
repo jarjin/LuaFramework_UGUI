@@ -7,7 +7,8 @@ using LuaInterface;
 namespace LuaFramework {
     public class NetworkManager : Manager {
         private SocketClient socket;
-        static Queue<KeyValuePair<int, ByteBuffer>> sEvents = new Queue<KeyValuePair<int, ByteBuffer>>();
+        static readonly object m_lockObject = new object();
+        static Queue<KeyValuePair<int, ByteBuffer>> mEvents = new Queue<KeyValuePair<int, ByteBuffer>>();
 
         SocketClient SocketClient {
             get { 
@@ -42,16 +43,18 @@ namespace LuaFramework {
 
         ///------------------------------------------------------------------------------------
         public static void AddEvent(int _event, ByteBuffer data) {
-            sEvents.Enqueue(new KeyValuePair<int, ByteBuffer>(_event, data));
+            lock (m_lockObject) {
+                mEvents.Enqueue(new KeyValuePair<int, ByteBuffer>(_event, data));
+            }
         }
 
         /// <summary>
         /// 交给Command，这里不想关心发给谁。
         /// </summary>
         void Update() {
-            if (sEvents.Count > 0) {
-                while (sEvents.Count > 0) {
-                    KeyValuePair<int, ByteBuffer> _event = sEvents.Dequeue();
+            if (mEvents.Count > 0) {
+                while (mEvents.Count > 0) {
+                    KeyValuePair<int, ByteBuffer> _event = mEvents.Dequeue();
                     facade.SendMessageCommand(NotiConst.DISPATCH_MESSAGE, _event);
                 }
             }

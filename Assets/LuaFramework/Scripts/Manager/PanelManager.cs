@@ -18,8 +18,6 @@ namespace LuaFramework {
             }
         }
 
-
-#if ASYNC_MODE
         /// <summary>
         /// 创建面板，请求资源管理器
         /// </summary>
@@ -27,15 +25,14 @@ namespace LuaFramework {
         public void CreatePanel(string name, LuaFunction func = null) {
             string assetName = name + "Panel";
             string abName = name.ToLower() + AppConst.ExtName;
+            if (Parent.FindChild(name) != null) return;
 
+#if ASYNC_MODE
             ResManager.LoadPrefab(abName, assetName, delegate(UnityEngine.Object[] objs) {
                 if (objs.Length == 0) return;
-                // Get the asset.
                 GameObject prefab = objs[0] as GameObject;
+                if (prefab == null) return;
 
-                if (Parent.FindChild(name) != null || prefab == null) {
-                    return;
-                }
                 GameObject go = Instantiate(prefab) as GameObject;
                 go.name = assetName;
                 go.layer = LayerMask.NameToLayer("Default");
@@ -47,18 +44,10 @@ namespace LuaFramework {
                 if (func != null) func.Call(go);
                 Debug.LogWarning("CreatePanel::>> " + name + " " + prefab);
             });
-        }
 #else
-        /// <summary>
-        /// 创建面板，请求资源管理器
-        /// </summary>
-        /// <param name="type"></param>
-        public void CreatePanel(string name, LuaFunction func = null) {
-            string assetName = name + "Panel";
             GameObject prefab = ResManager.LoadAsset<GameObject>(name, assetName);
-            if (Parent.FindChild(name) != null || prefab == null) {
-                return;
-            }
+            if (prefab == null) return;
+
             GameObject go = Instantiate(prefab) as GameObject;
             go.name = assetName;
             go.layer = LayerMask.NameToLayer("Default");
@@ -69,7 +58,18 @@ namespace LuaFramework {
 
             if (func != null) func.Call(go);
             Debug.LogWarning("CreatePanel::>> " + name + " " + prefab);
-        }
 #endif
+        }
+
+        /// <summary>
+        /// 关闭面板
+        /// </summary>
+        /// <param name="name"></param>
+        public void ClosePanel(string name) {
+            var panelName = name + "Panel";
+            var panelObj = Parent.FindChild(panelName);
+            if (panelObj == null) return;
+            Destroy(panelObj.gameObject);
+        }
     }
 }

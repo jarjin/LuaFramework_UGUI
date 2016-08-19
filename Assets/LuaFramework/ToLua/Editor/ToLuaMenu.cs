@@ -1086,11 +1086,11 @@ public static class ToLuaMenu
         CopyLuaBytesFiles(LuaConst.luaDir, tempDir);
         CopyLuaBytesFiles(LuaConst.toluaDir, tempDir);
 
-        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
         List<string> dirs = new List<string>();
         GetAllDirs(tempDir, dirs);
 
-#if UNITY_5
+#if UNITY_5        
         for (int i = 0; i < dirs.Count; i++)
         {
             string str = dirs[i].Remove(0, tempDir.Length);
@@ -1099,10 +1099,11 @@ public static class ToLuaMenu
 
         BuildLuaBundle(null, "Assets/temp/Lua");
 
-        AssetDatabase.SaveAssets();
-        string output = string.Format("{0}/{1}", Application.streamingAssetsPath, GetOS());
+        AssetDatabase.SaveAssets();        
+        string output = string.Format("{0}/{1}", Application.streamingAssetsPath, GetOS());        
         BuildPipeline.BuildAssetBundles(output, BuildAssetBundleOptions.DeterministicAssetBundle, EditorUserBuildSettings.activeBuildTarget);
-        Directory.Delete(Application.dataPath + "/temp/", true);
+
+        //Directory.Delete(Application.dataPath + "/temp/", true);
 #else
         for (int i = 0; i < dirs.Count; i++)
         {

@@ -151,6 +151,7 @@ namespace LuaInterface
 
             BeginModule("UnityEngine");
             UnityEngine_ObjectWrap.Register(this);            
+            UnityEngine_CoroutineWrap.Register(this);
             EndModule(); //end UnityEngine
 
             EndModule(); //end global
@@ -180,7 +181,7 @@ namespace LuaInterface
 
                 if (!Directory.Exists(LuaConst.toluaDir))
                 {
-                    string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.luaDir);
+                    string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.toluaDir);
                     throw new LuaException(msg);
                 }
 

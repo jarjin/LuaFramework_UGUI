@@ -187,7 +187,7 @@ namespace LuaInterface
 
     public class LuaDLL
     {
-        public static string version = "1.0.6.233";
+        public static string version = "1.0.6.237";
         public static int LUA_MULTRET = -1;
         public static string[] LuaTypeName = { "none", "nil", "boolean", "lightuserdata", "number", "string", "table", "function", "userdata", "thread" };        
 
@@ -312,7 +312,7 @@ namespace LuaInterface
 
         public static bool lua_toboolean(IntPtr luaState, int idx)
         {
-            return tolua_toboolean(luaState, idx);
+            return tolua_toboolean(luaState, idx);            
         }
 
         public static IntPtr lua_tolstring(IntPtr luaState, int index, out int strLen)               //[-0, +0, m]

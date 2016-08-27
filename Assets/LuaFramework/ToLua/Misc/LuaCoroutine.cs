@@ -35,10 +35,11 @@ public static class LuaCoroutine
         local debug = debug
         local coroutine = coroutine
         local comap = {}
-        setmetatable(comap, {__mode = 'kv'})
+        setmetatable(comap, {__mode = 'k'})
 
         function _resume(co)
             if comap[co] then
+                comap[co] = nil
                 local flag, msg = coroutine.resume(co)
                     
                 if not flag then
@@ -50,7 +51,7 @@ public static class LuaCoroutine
 
         function WaitForSeconds(t)
             local co = coroutine.running()
-            local resume = function()    
+            local resume = function()                    
                 _resume(co)                     
             end
             
@@ -116,7 +117,7 @@ public static class LuaCoroutine
         state.RegFunction("StopCoroutine", StopCoroutine);
         state.EndModule();
 
-        state.LuaDoString(strCo);
+        state.LuaDoString(strCo, "LuaCoroutine.cs");
         mb = behaviour;
     }
 

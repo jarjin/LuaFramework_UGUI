@@ -25,7 +25,10 @@ using LuaInterface;
 using System.Collections;
 using System.IO;
 using System;
+
+#if UNITY_5_4
 using UnityEngine.SceneManagement;
+#endif
 
 public class LuaClient : MonoBehaviour
 {

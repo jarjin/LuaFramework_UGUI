@@ -177,7 +177,9 @@ public class TestDelegate: MonoBehaviour
             return fn;
         }
 
-        TestEventListener.OnClick d = (new TestEventListener_OnClick_Event(func)).Call;
+        TestEventListener_OnClick_Event target = new TestEventListener_OnClick_Event(func);
+        TestEventListener.OnClick d = target.Call;
+        target.method = d.Method;
         return d;
     }
 
@@ -202,7 +204,9 @@ public class TestDelegate: MonoBehaviour
             return fn;
         }
 
-        TestEventListener.VoidDelegate d = (new TestEventListener_VoidDelegate_Event(func)).Call;
+        TestEventListener_VoidDelegate_Event target = new TestEventListener_VoidDelegate_Event(func);
+        TestEventListener.VoidDelegate d = target.Call;
+        target.method = d.Method;
         return d;
     }
 
@@ -287,7 +291,7 @@ public class TestDelegate: MonoBehaviour
     void Update()
     {
         state.Collect();
-        state.CheckTop();
+        state.CheckTop();        
     }
 
     void SafeRelease(ref LuaFunction luaRef)

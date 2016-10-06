@@ -25,8 +25,7 @@ using LuaInterface;
 using System.Collections;
 using System.IO;
 using System;
-
-#if UNITY_5_4
+#if UNITY_5
 using UnityEngine.SceneManagement;
 #endif
 
@@ -196,6 +195,12 @@ public class LuaClient : MonoBehaviour
             levelLoaded.Push(level);
             levelLoaded.PCall();
             levelLoaded.EndPCall();
+        }
+
+        if (luaState != null)
+        {
+            //luaState.LuaGC(LuaGCOptions.LUA_GCCOLLECT);
+            luaState.RefreshDelegateMap();
         }
     }
 

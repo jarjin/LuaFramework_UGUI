@@ -15,6 +15,10 @@ tolua#地址： https://github.com/topameng/tolua
 服务器框架:  https://github.com/jarjin/ServerFramework
 XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
+Excel配置：https://github.com/sy-yanghuan/proton
+
+//-------------2016-11-03-------------
+(1)更新tolua#到1.0.6.266版
 
 //-------------2016-10-24-------------
 (1)更新tolua#到1.0.6.264版

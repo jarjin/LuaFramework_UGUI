@@ -17,6 +17,9 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
+//-------------2016-12-05-------------
+(1)更新tolua#到1.0.6.273版
+
 //-------------2016-11-03-------------
 (1)更新tolua#到1.0.6.266版
 

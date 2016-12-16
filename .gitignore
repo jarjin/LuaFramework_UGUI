@@ -1,0 +1,5 @@
+*.meta
+*Wrap.cs
+Library
+obj
+*.DS_Store

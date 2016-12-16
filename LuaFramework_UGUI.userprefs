@@ -1,0 +1,15 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/LuaFramework/Editor/CustomSettings.cs">
+    <Files>
+      <File FileName="Assets/LuaFramework/ToLua/Source/Generate/UnityEngine_AnimationStateWrap.cs" Line="1" Column="1" />
+      <File FileName="Assets/LuaFramework/Editor/CustomSettings.cs" Line="56" Column="31" />
+      <File FileName="Assets/LuaFramework/ToLua/Source/Generate/UnityEngine_QueueModeWrap.cs" Line="1" Column="1" />
+      <File FileName="Assets/LuaFramework/ToLua/Source/Generate/UnityEngine_QualitySettingsWrap.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

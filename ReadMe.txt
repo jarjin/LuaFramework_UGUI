@@ -7,6 +7,10 @@
 
 支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)
 
+
+寻找热更新人才与项目组到“七之猫”网站 http://www.sevencat.cn/
+
+
 **资料地址**<br>
 框架文档地址 http://doc.ulua.org/
 网盘下载地址 http://pan.baidu.com/s/1nu59wzJ
@@ -18,7 +22,7 @@ UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
 //-------------2017-03-01-------------
-(1)更新tolua#到1.0.6.289版
+(1)更新tolua#到1.0.6.291版
 
 //-------------2017-01-07-------------
 (1)更新tolua#到1.0.6.284版

@@ -148,6 +148,7 @@ public static class ToLuaExport
         "Terrain.bakeLightProbesForTrees",
         "MonoBehaviour.runInEditMode",
         "Light.lightmappingMode",
+		"Light.lightmapBakeType", 
         //NGUI
         "UIInput.ProcessEvent",
         "UIWidget.showHandlesWithMoveTool",

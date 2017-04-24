@@ -75,9 +75,7 @@ public class Packager {
             HandleExampleBundle();
         }
         string resPath = "Assets/" + AppConst.AssetDir;
-        BuildAssetBundleOptions options = BuildAssetBundleOptions.DeterministicAssetBundle | 
-                                          BuildAssetBundleOptions.UncompressedAssetBundle;
-        BuildPipeline.BuildAssetBundles(resPath, maps.ToArray(), options, target);
+        BuildPipeline.BuildAssetBundles(resPath, maps.ToArray(), BuildAssetBundleOptions.None, target);
         BuildFileIndex();
 
         string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;

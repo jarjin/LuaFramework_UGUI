@@ -22,6 +22,10 @@ UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
 //-------------2017-04-18-------------
+(1)修复LuaClient.cs里在大于Unity5.3版本的命名空间报错。
+(2)修复ToLuaExport.cs里Light.lightmapBakeType报错。
+
+//-------------2017-04-18-------------
 (1)更新tolua#到1.0.6.304版
 
 //-------------2017-03-19-------------

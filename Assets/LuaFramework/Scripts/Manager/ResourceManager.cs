@@ -162,11 +162,11 @@ namespace LuaFramework {
                     for (int i = 0; i < dependencies.Length; i++) {
                         string depName = dependencies[i];
                         AssetBundleInfo bundleInfo = null;
-                        if (m_LoadedAssetBundles.TryGetValue(depName, out bundleInfo)) {
-                            bundleInfo.m_ReferencedCount++;
-                        } else if (!m_LoadRequests.ContainsKey(depName)) {
-                            yield return StartCoroutine(OnLoadAssetBundle(depName, type));
+                        if (!m_LoadedAssetBundles.TryGetValue(depName, out bundleInfo)) {
+                            if (!m_LoadRequests.ContainsKey(depName)) yield return StartCoroutine(OnLoadAssetBundle(depName, type));
+                            bundleInfo = m_LoadedAssetBundles[depName];
                         }
+                        bundleInfo.m_ReferencedCount++;
                     }
                 }
                 download = WWW.LoadFromCacheOrDownload(url, m_AssetBundleManifest.GetAssetBundleHash(abName), 0);

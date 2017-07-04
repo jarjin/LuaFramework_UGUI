@@ -24,6 +24,7 @@ Excel配置：https://github.com/sy-yanghuan/proton
 
 //-------------2017-07-05-------------
 (1)重新编译luajit二进制文件到最新版本。
+(2)替换Lua代码中Unity5.6.x废弃FindChild到Find函数。
 
 //-------------2017-07-04-------------
 (1)更新luajit二进制文件到最新版本。

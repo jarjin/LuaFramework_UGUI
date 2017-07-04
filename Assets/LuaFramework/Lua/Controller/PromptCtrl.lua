@@ -51,7 +51,7 @@ function PromptCtrl.InitPanel(objs)
 		go.transform.localPosition = Vector3.zero;
         prompt:AddClick(go, this.OnItemClick);
 
-	    local label = go.transform:FindChild('Text');
+	    local label = go.transform:Find('Text');
 	    label:GetComponent('Text').text = tostring(i);
 	end
 end

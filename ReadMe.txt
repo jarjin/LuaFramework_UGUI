@@ -21,6 +21,10 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
+
+//-------------2017-07-05-------------
+(1)重新编译luajit二进制文件到最新版本。
+
 //-------------2017-07-04-------------
 (1)更新luajit二进制文件到最新版本。
 (2)更新tolua#到1.0.7.316版

@@ -26,6 +26,7 @@ Excel配置：https://github.com/sy-yanghuan/proton
 (1)重新编译luajit二进制文件到最新版本。
 (2)替换Lua代码中Unity5.6.x废弃FindChild到Find函数。
 (3)support ipv6 only.
+(4)重新编译luajit，编译命令: make XCFLAGS=-DLUAJIT_ENABLE_GC64
 
 //-------------2017-07-04-------------
 (1)更新luajit二进制文件到最新版本。

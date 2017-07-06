@@ -806,6 +806,16 @@ namespace LuaInterface
             }
         }
 
+        public static Nullable<T> ToNullable<T>(IntPtr L, int stackPos) where T : struct
+        {
+            if (LuaDLL.lua_type(L, stackPos) == LuaTypes.LUA_TNIL)
+            {
+                return null;
+            }
+
+            return StackTraits<T>.To(L, stackPos);
+        }
+
         static object ToObjectVec3(IntPtr L, int stackPos)
         {
             return ToVector3(L, stackPos);
@@ -2835,5 +2845,43 @@ namespace LuaInterface
                 throw new LuaException(string.Format("no overload for method takes '{0}' arguments", c));
             }
         }  
+
+        public static Delegate CheckDelegate(Type t, IntPtr L, int stackPos)
+        {                        
+            LuaTypes luatype = LuaDLL.lua_type(L, stackPos);
+
+            switch (luatype)
+            {
+                case LuaTypes.LUA_TNIL:
+                    return null;
+                case LuaTypes.LUA_TFUNCTION:
+                    LuaFunction func = ToLua.ToLuaFunction(L, stackPos);
+                    return DelegateFactory.CreateDelegate(t, func);
+                case LuaTypes.LUA_TUSERDATA:
+                    return (Delegate)ToLua.CheckObject(L, stackPos, t);
+                default:
+                    LuaDLL.luaL_typerror(L, stackPos, LuaMisc.GetTypeName(t));
+                    return null;                    
+            }
+        }
+
+        public static Delegate CheckDelegate<T>(IntPtr L, int stackPos)
+        {
+            LuaTypes luatype = LuaDLL.lua_type(L, stackPos);
+
+            switch (luatype)
+            {
+                case LuaTypes.LUA_TNIL:
+                    return null;
+                case LuaTypes.LUA_TFUNCTION:
+                    LuaFunction func = ToLua.ToLuaFunction(L, stackPos);
+                    return DelegateTraits<T>.Create(func);
+                case LuaTypes.LUA_TUSERDATA:
+                    return (Delegate)ToLua.CheckObject(L, stackPos, typeof(T));
+                default:
+                    LuaDLL.luaL_typerror(L, stackPos, TypeTraits<T>.GetTypeName());
+                    return null;
+            }
+        }
     }
 }

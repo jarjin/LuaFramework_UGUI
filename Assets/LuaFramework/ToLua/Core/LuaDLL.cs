@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2015-2016 topameng(topameng@qq.com)
+Copyright (c) 2015-2017 topameng(topameng@qq.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -187,7 +187,7 @@ namespace LuaInterface
 
     public class LuaDLL
     {
-        public static string version = "1.0.7.316";
+        public static string version = "1.0.7.326";
         public static int LUA_MULTRET = -1;
         public static string[] LuaTypeName = { "none", "nil", "boolean", "lightuserdata", "number", "string", "table", "function", "userdata", "thread" };        
 
@@ -1060,7 +1060,7 @@ namespace LuaInterface
         public static extern IntPtr tolua_getmainstate(IntPtr L);
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern LuaValueType tolua_getvaluetype(IntPtr L, int stackPos);
+        public static extern int tolua_getvaluetype(IntPtr L, int stackPos);                
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool tolua_createtable(IntPtr L, string fullPath, int szhint = 0);
@@ -1128,10 +1128,20 @@ namespace LuaInterface
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool tolua_isvptrtable(IntPtr L, int index);
 
-        public static int toluaL_exception(IntPtr L, Exception e, string msg = null)
+        public static int toluaL_exception(IntPtr L, Exception e)
+        {            
+            LuaException.luaStack = new LuaException(e.Message, e, 2);            
+            return tolua_error(L, e.Message);
+        }
+
+        public static int toluaL_exception(IntPtr L, Exception e, object o, string msg)
         {
-            msg = msg == null ? e.Message : msg;
-            LuaException.luaStack = new LuaException(msg, e, 2);            
+            if (o != null && !o.Equals(null))
+            {
+                msg = e.Message;
+            }
+            
+            LuaException.luaStack = new LuaException(msg, e, 2);
             return tolua_error(L, msg);
         }
 

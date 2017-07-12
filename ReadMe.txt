@@ -21,6 +21,9 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
+//-------------2017-07-12-------------
+(1)修复iOS底层库未集成PBC插件的BUG.
+
 //-------------2017-07-07-------------
 (1)更新tolua#到1.0.7.327版
 (2)更新最新tolua_runtime库到1.0.7版。

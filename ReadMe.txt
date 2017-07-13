@@ -21,6 +21,9 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
+//-------------2017-07-13-------------
+(1)重新编译苹果版luajit，编译命令: make XCFLAGS=-DLUAJIT_ENABLE_GC64
+
 //-------------2017-07-12-------------
 (1)修复iOS底层库未集成PBC插件的BUG.
 

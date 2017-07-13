@@ -23,6 +23,7 @@ Excel配置：https://github.com/sy-yanghuan/proton
 
 //-------------2017-07-13-------------
 (1)重新编译苹果版luajit，编译命令: make XCFLAGS=-DLUAJIT_ENABLE_GC64
+(2)更新至tolua 1.0.7.334 fixed LuaTable this 操作问题
 
 //-------------2017-07-12-------------
 (1)修复iOS底层库未集成PBC插件的BUG.

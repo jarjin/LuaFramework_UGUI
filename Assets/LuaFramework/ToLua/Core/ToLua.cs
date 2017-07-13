@@ -454,12 +454,17 @@ namespace LuaInterface
                 FieldInfo listViewFieldInfo = consoleWindowType.GetField("m_ListView", BindingFlags.Instance | BindingFlags.NonPublic);
                 logListView = listViewFieldInfo.GetValue(consoleWindow);
                 logListViewCurrentRow = listViewFieldInfo.FieldType.GetField("row", BindingFlags.Instance | BindingFlags.Public);
-
-                Type logEntriesType = unityEditorAssembly.GetType("UnityEditorInternal.LogEntries");
+#if UNITY_2017
+                Type logEntriesType = unityEditorAssembly.GetType("UnityEditor.LogEntries");
+                LogEntriesGetEntry = logEntriesType.GetMethod("GetEntryInternal", BindingFlags.Static | BindingFlags.Public);
+                Type logEntryType = unityEditorAssembly.GetType("UnityEditor.LogEntry");                
+#else
+                Type logEntriesType = unityEditorAssembly.GetType("UnityEditorInternal.LogEntries");                
                 LogEntriesGetEntry = logEntriesType.GetMethod("GetEntryInternal", BindingFlags.Static | BindingFlags.Public);
                 Type logEntryType = unityEditorAssembly.GetType("UnityEditorInternal.LogEntry");
+#endif
                 logEntry = Activator.CreateInstance(logEntryType);
-                logEntryCondition = logEntryType.GetField("condition", BindingFlags.Instance | BindingFlags.Public);                
+                logEntryCondition = logEntryType.GetField("condition", BindingFlags.Instance | BindingFlags.Public);
             }
 
             return true;
@@ -575,7 +580,7 @@ namespace LuaInterface
         }
 #endif
 #endregion
-    /*-------------------------------------------------------------------------------------------*/
+                /*-------------------------------------------------------------------------------------------*/
 
         public static string ToString(IntPtr L, int stackPos)
         {
@@ -700,6 +705,7 @@ namespace LuaInterface
                 float dx = (float)LuaDLL.lua_tonumber(L, top + 4);
                 float dy = (float)LuaDLL.lua_tonumber(L, top + 5);
                 float dz = (float)LuaDLL.lua_tonumber(L, top + 6);
+                LuaDLL.lua_settop(L, top);
                 return new Ray(new Vector3(ox, oy, oz), new Vector3(dx, dy, dz));
             }
             else
@@ -721,6 +727,7 @@ namespace LuaInterface
             {
                 Vector3 center = ToVector3(L, top + 1);
                 Vector3 size = ToVector3(L, top + 2);
+                LuaDLL.lua_settop(L, top);
                 return new Bounds(center, size);
             }
             else

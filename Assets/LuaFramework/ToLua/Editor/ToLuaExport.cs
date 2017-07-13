@@ -148,6 +148,8 @@ public static class ToLuaExport
         "CanvasRenderer.onRequestRebuild",
         "Terrain.bakeLightProbesForTrees",
         "MonoBehaviour.runInEditMode",
+        "TextureFormat.DXT1Crunched",
+        "TextureFormat.DXT5Crunched",
         //NGUI
         "UIInput.ProcessEvent",
         "UIWidget.showHandlesWithMoveTool",
@@ -277,11 +279,6 @@ public static class ToLuaExport
         Type iterType = typeof(System.Collections.IEnumerator);
 
         if (type.IsInterface && type != iterType)
-        {
-            return;
-        }
-
-        if (type != iterType && iterType.IsAssignableFrom(type))
         {
             return;
         }
@@ -1621,7 +1618,7 @@ public static class ToLuaExport
         {
             sb.AppendFormat("{0}{1} obj = ToLua.CheckMonoType(L, {2});\r\n", head, className, pos);
         }
-        else if (type == typeof(IEnumerator) || typeof(IEnumerator).IsAssignableFrom(type))
+        else if (type == typeof(IEnumerator))
         {
             sb.AppendFormat("{0}{1} obj = ToLua.CheckIter(L, {2});\r\n", head, className, pos);
         }

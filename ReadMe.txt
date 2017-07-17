@@ -21,6 +21,9 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
+//-------------2017-07-17-------------
+(1)更新tolua#到1.0.7.343版
+
 //-------------2017-07-13-------------
 (1)重新编译苹果版luajit，编译命令: make XCFLAGS=-DLUAJIT_ENABLE_GC64
 (2)更新至tolua 1.0.7.334 fixed LuaTable this 操作问题

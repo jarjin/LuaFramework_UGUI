@@ -48,7 +48,7 @@ public static class ToLuaMenu
 #if !UNITY_5 && !UNITY_2017
         typeof(Motion),                                     //很多平台只是空类
 #endif
-        typeof(UnityEngine.CustomYieldInstruction),
+        //typeof(UnityEngine.CustomYieldInstruction),
         typeof(UnityEngine.YieldInstruction),               //无需导出的类      
         typeof(UnityEngine.WaitForEndOfFrame),              //内部支持
         typeof(UnityEngine.WaitForFixedUpdate),
@@ -1035,7 +1035,11 @@ public static class ToLuaMenu
                 File.Copy(path + "/Luajit64/Build.bat", tempDir + "/Build.bat", true);
             }
         }
+#if UNITY_5 || UNITY_2017
         else if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
+#else
+        else if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iPhone)
+#endif
         {
             //Debug.Log("iOS默认用64位，32位自行考虑");
             File.Copy(path + "/Luajit64/Build.bat", tempDir + "/Build.bat", true);

@@ -31,7 +31,8 @@ namespace LuaFramework {
         public void AddBundle(string bundleName) {
             string url = Util.DataPath + bundleName.ToLower();
             if (File.Exists(url)) {
-                AssetBundle bundle = AssetBundle.CreateFromFile(url);
+                var bytes = File.ReadAllBytes(url);
+                AssetBundle bundle = AssetBundle.CreateFromMemoryImmediate(bytes);
                 if (bundle != null)
                 {
                     bundleName = bundleName.Replace("lua/", "").Replace(".unity3d", "");

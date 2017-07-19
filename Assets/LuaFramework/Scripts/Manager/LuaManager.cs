@@ -111,7 +111,7 @@ namespace LuaFramework {
         public object[] CallFunction(string funcName, params object[] args) {
             LuaFunction func = lua.GetFunction(funcName);
             if (func != null) {
-                return func.Call(args);
+                return func.LazyCall(args);
             }
             return null;
         }

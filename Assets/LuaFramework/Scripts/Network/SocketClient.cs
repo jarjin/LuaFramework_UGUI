@@ -48,11 +48,21 @@ public class SocketClient {
     /// </summary>
     void ConnectServer(string host, int port) {
         client = null;
-        client = new TcpClient();
-        client.SendTimeout = 1000;
-        client.ReceiveTimeout = 1000;
-        client.NoDelay = true;
         try {
+            IPAddress[] address = Dns.GetHostAddresses(host);
+            if (address.Length == 0) {
+                Debug.LogError("host invalid");
+                return;
+            }
+            if (address[0].AddressFamily == AddressFamily.InterNetworkV6) {
+                client = new TcpClient(AddressFamily.InterNetworkV6);
+            }
+            else {
+                client = new TcpClient(AddressFamily.InterNetwork);
+            }
+            client.SendTimeout = 1000;
+            client.ReceiveTimeout = 1000;
+            client.NoDelay = true;
             client.BeginConnect(host, port, new AsyncCallback(OnConnect), null);
         } catch (Exception e) {
             Close(); Debug.LogError(e.Message);
@@ -81,7 +91,7 @@ public class SocketClient {
             writer.Write(message);
             writer.Flush();
             if (client != null && client.Connected) {
-                //NetworkStream stream = client.GetStream(); 
+                //NetworkStream stream = client.GetStream();
                 byte[] payload = ms.ToArray();
                 outStream.BeginWrite(payload, 0, payload.Length, new AsyncCallback(OnWrite), null);
             } else {

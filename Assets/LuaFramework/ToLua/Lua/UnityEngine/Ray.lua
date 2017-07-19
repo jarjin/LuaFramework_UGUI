@@ -5,8 +5,14 @@
 --------------------------------------------------------------------------------
 local rawget = rawget
 local setmetatable = setmetatable
+local Vector3 = Vector3
 
-local Ray = {}
+local Ray = 
+{
+	direction = Vector3.zero,
+	origin = Vector3.zero,
+}
+
 local get = tolua.initget(Ray)
 
 Ray.__index = function(t,k)
@@ -42,7 +48,9 @@ function Ray:GetPoint(distance)
 end
 
 function Ray:Get()		
-	return self.origin, self.direction
+	local o = self.origin
+	local d = self.direction
+	return o.x, o.y, o.z, d.x, d.y, d.z
 end
 
 Ray.__tostring = function(self)

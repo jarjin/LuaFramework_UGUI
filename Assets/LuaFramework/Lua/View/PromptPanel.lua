@@ -15,8 +15,8 @@ end
 
 --初始化面板--
 function PromptPanel.InitPanel()
-	this.btnOpen = transform:FindChild("Open").gameObject;
-	this.gridParent = transform:FindChild('ScrollView/Grid');
+	this.btnOpen = transform:Find("Open").gameObject;
+	this.gridParent = transform:Find('ScrollView/Grid');
 end
 
 --单击事件--

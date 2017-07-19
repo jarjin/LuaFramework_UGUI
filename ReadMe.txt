@@ -3,7 +3,7 @@
 本框架工程基于Unity 5.0 + UGUI + tolua构建
 服务器端基于VS2012及其以上版本。
 
-有问题请加：ulua技术交流群 434341400
+有问题请加：ulua技术交流群 434341400 
 
 支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)
 
@@ -20,6 +20,37 @@ tolua#地址： https://github.com/topameng/tolua
 XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
+
+//-------------2017-07-18-------------
+(1)修复部分BUG报错。
+(2)修复MAC下编码Lua文件可执行文件路径。
+
+//-------------2017-07-17-------------
+(1)更新tolua#到1.0.7.343版
+
+//-------------2017-07-13-------------
+(1)重新编译苹果版luajit，编译命令: make XCFLAGS=-DLUAJIT_ENABLE_GC64
+(2)更新至tolua 1.0.7.334 fixed LuaTable this 操作问题
+
+//-------------2017-07-12-------------
+(1)修复iOS底层库未集成PBC插件的BUG.
+
+//-------------2017-07-07-------------
+(1)更新tolua#到1.0.7.327版
+(2)更新最新tolua_runtime库到1.0.7版。
+
+//-------------2017-07-05-------------
+(1)重新编译luajit二进制文件到最新版本。
+(2)替换Lua代码中Unity5.6.x废弃FindChild到Find函数。
+(3)support ipv6 only.
+(4)重新编译luajit，编译命令: make XCFLAGS=-DLUAJIT_ENABLE_GC64
+
+//-------------2017-07-04-------------
+(1)更新luajit二进制文件到最新版本。
+(2)更新tolua#到1.0.7.316版
+
+//-------------2017-06-20-------------
+(1)更新tolua#到1.0.6.312版
 
 //-------------2017-04-18-------------
 (1)修复LuaClient.cs里在大于Unity5.3版本的命名空间报错。

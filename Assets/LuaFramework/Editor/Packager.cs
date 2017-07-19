@@ -279,7 +279,7 @@ public class Packager {
             File.Copy(srcFile, outFile, true);
             return;
         }
-        bool isWin = true;
+        bool isWin = true; 
         string luaexe = string.Empty;
         string args = string.Empty;
         string exedir = string.Empty;
@@ -291,17 +291,17 @@ public class Packager {
             exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
         } else if (Application.platform == RuntimePlatform.OSXEditor) {
             isWin = false;
-            luaexe = "./luac";
-            args = "-o " + outFile + " " + srcFile;
-            exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luavm/";
+            luaexe = "./luajit";
+            args = "-b " + srcFile + " " + outFile;
+            exedir = AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
         }
         Directory.SetCurrentDirectory(exedir);
         ProcessStartInfo info = new ProcessStartInfo();
         info.FileName = luaexe;
         info.Arguments = args;
         info.WindowStyle = ProcessWindowStyle.Hidden;
-        info.ErrorDialog = true;
         info.UseShellExecute = isWin;
+        info.ErrorDialog = true;
         Util.Log(info.FileName + " " + info.Arguments);
 
         Process pro = Process.Start(info);

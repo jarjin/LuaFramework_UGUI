@@ -210,7 +210,7 @@ public class TestLuaStack : MonoBehaviour
     {
         try
         {
-            GameObject go = (GameObject)ToLua.CheckUnityObject(L, 1, typeof(GameObject));
+            GameObject go = (GameObject)ToLua.CheckObject(L, 1, typeof(GameObject));
             ToLua.Push(L, go.name);
             return 1;
         }
@@ -225,7 +225,7 @@ public class TestLuaStack : MonoBehaviour
     {
         try
         {
-            GameObject go = (GameObject)ToLua.CheckUnityObject(L, 1, typeof(GameObject));
+            GameObject go = (GameObject)ToLua.CheckObject(L, 1, typeof(GameObject));
             go.AddComponent<TestInstantiate2>();
             return 0;
         }
@@ -283,7 +283,7 @@ public class TestLuaStack : MonoBehaviour
 
     void Awake()
     {
-#if UNITY_5		
+#if UNITY_5 || UNITY_2017	
         Application.logMessageReceived += ShowTips;
 #else
         Application.RegisterLogCallback(ShowTips);
@@ -332,7 +332,7 @@ public class TestLuaStack : MonoBehaviour
 
     void OnApplicationQuit()
     {
-#if UNITY_5		
+#if UNITY_5 || UNITY_2017
         Application.logMessageReceived -= ShowTips;
 #else
         Application.RegisterLogCallback(null);

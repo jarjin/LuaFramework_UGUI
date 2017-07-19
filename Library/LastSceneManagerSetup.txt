@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/LuaFramework/ToLua/Examples/Test_luaInvokeC/Test_luaInvokeC.unity
+  isLoaded: 1
+  isActive: 1

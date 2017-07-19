@@ -111,6 +111,11 @@ namespace LuaInterface
             OpenBaseLibs();                        
             LuaSetTop(0);
             InitLuaPath();
+			// mydemo
+//			LuaDLL.tolua_openlibs(L);
+//			Debug.Log("++++++++++>>>>>");
+//			LuaDLL.tolua_lateupdate(L);
+//			LuaDLL.tolua_mydemolibs(L);
         }
 
         void OpenBaseLibs()

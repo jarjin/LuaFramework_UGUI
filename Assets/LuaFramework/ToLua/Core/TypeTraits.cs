@@ -56,13 +56,23 @@ namespace LuaInterface
 
         static public int GetLuaReference(IntPtr L)
         {
+#if MULTI_STATE
+            return LuaStatic.GetMetaReference(L, type);
+#else
             if (metaref > 0)
             {                
                 return metaref;
             }
 
             metaref = LuaStatic.GetMetaReference(L, type);
+
+            if (metaref > 0)
+            {
+                LuaState.Get(L).OnDestroy += () => { metaref = -1; };
+            }
+
             return metaref;
+#endif
         }   
 
         static bool DefaultCheck(IntPtr L, int pos)

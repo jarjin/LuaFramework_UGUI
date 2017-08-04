@@ -199,6 +199,10 @@ namespace LuaInterface
         /*
         ** third party library
         */
+
+		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int tolua_mydemolibs(IntPtr L);
+
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int luaopen_sproto_core(IntPtr L);
 
@@ -1234,9 +1238,9 @@ namespace LuaInterface
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int tolua_update(IntPtr L, float deltaTime, float unscaledDelta);
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int tolua_lateupdate(IntPtr L);
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int tolua_fixedupdate(IntPtr L, float fixedTime);
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void tolua_regthis(IntPtr L, IntPtr get, IntPtr set);

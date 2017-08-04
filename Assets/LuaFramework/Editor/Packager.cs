@@ -67,13 +67,14 @@ public class Packager {
 
         maps.Clear();
         if (AppConst.LuaBundleMode) {
-            HandleLuaBundle();
+			HandleLuaBundle();// 处理Lua代码包
         } else {
-            HandleLuaFile();
+			HandleLuaFile();// 处理Lua文件
         }
         if (AppConst.ExampleMode) {
-            HandleExampleBundle();
+			HandleExampleBundle();// 处理框架实例包
         }
+		HandleProjectBundle();// 处理项目实例包
         string resPath = "Assets/" + AppConst.AssetDir;
         BuildPipeline.BuildAssetBundles(resPath, maps.ToArray(), BuildAssetBundleOptions.None, target);
         BuildFileIndex();
@@ -167,6 +168,17 @@ public class Packager {
         AddBuildMap("prompt_asset" + AppConst.ExtName, "*.png", "Assets/LuaFramework/Examples/Textures/Prompt");
         AddBuildMap("shared_asset" + AppConst.ExtName, "*.png", "Assets/LuaFramework/Examples/Textures/Shared");
     }
+
+	/// <summary>
+	/// 处理项目实例包
+	/// </summary>
+	static void HandleProjectBundle() {
+		string resPath = AppDataPath + "/" + AppConst.AssetDir + "/";
+		if (!Directory.Exists(resPath)) Directory.CreateDirectory(resPath);
+
+//		AddBuildMap("prompt" + AppConst.ExtName, "*.prefab", "Assets/LuaFramework/Examples/Builds/Prompt");
+
+	}
 
     /// <summary>
     /// 处理Lua文件

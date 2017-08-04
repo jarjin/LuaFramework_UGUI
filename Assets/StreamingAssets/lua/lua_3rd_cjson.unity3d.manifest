@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 3045580688
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4e1d3ae3f240bcda73f6ffc7c7166164
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/Lua/3rd/cjson/test.lua.bytes
+- Assets/Lua/3rd/cjson/lua2json.lua.bytes
+- Assets/Lua/3rd/cjson/json2lua.lua.bytes
+- Assets/Lua/3rd/cjson/util.lua.bytes
+Dependencies: []

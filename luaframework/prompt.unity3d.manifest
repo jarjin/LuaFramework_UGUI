@@ -1,0 +1,49 @@
+ManifestFileVersion: 0
+CRC: 3256604335
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6f1b00b93d44589f2e1d00f3662b3bcf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8fbc752ec2d963614c2dca8586fa6057
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -2095666955, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: -1200242548, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 1367256648, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/LuaFramework/Examples/Builds/Prompt/PromptItem.prefab
+- Assets/LuaFramework/Examples/Builds/Prompt/PromptPanel.prefab
+Dependencies:
+- /Users/gaodan/Documents/GitHub/LuaFramework_UGUI/Assets/StreamingAssets/prompt_asset.unity3d
+- /Users/gaodan/Documents/GitHub/LuaFramework_UGUI/Assets/StreamingAssets/shared_asset.unity3d

@@ -21,6 +21,9 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
+//-------------2017-08-10-------------
+(1)更新tolua#到1.0.7.359版
+
 //-------------2017-08-07-------------
 (1)修复LuaManager.DoFile的BUG。
 (2)重新编译最新版sproto，请替换对应目录即可。

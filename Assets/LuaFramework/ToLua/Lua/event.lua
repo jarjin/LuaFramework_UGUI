@@ -76,9 +76,8 @@ function _event:Add(func, obj)
 	end	
 
 	if self.lock then
-		local node = {value = func, _prev = 0, _next = 0}
-		table.insert(self.opList, node)
-		node.op = list.pushnode		
+		local node = {value = func, _prev = 0, _next = 0, removed = true}
+		table.insert(self.opList, function() self.list:pushnode(node) end)			
 		return node
 	else
 		return self.list:push(func)
@@ -90,8 +89,7 @@ function _event:Remove(func, obj)
 	for i, v in ilist(self.list) do							
 		if v.func == func and v.obj == obj then
 			if self.lock then
-				table.insert(self.opList, i)
-				node.op = list.remove
+				table.insert(self.opList, function() self.list:remove(i) end)				
 			else
 				self.list:remove(i)
 			end
@@ -111,21 +109,23 @@ function _event:CreateListener(func, obj)
 end
 
 function _event:AddListener(handle)	
-	if self.lock then
-		table.insert(self.opList, handle)	
-		handle.op = list.pushnode			
+	assert(handle)
+
+	if self.lock then		
+		table.insert(self.opList, function() self.list:pushnode(handle) end)		
 	else
 		self.list:pushnode(handle)
 	end	
 end
 
-function _event:RemoveListener(handle)		
+function _event:RemoveListener(handle)	
+	assert(handle)	
+
 	if self.lock then		
-		table.insert(self.opList, handle)		
-		handle.op = list.remove		
+		table.insert(self.opList, function() self.list:remove(handle) end)				
 	else
 		self.list:remove(handle)
-	end	
+	end
 end
 
 function _event:Count()
@@ -174,12 +174,13 @@ _event.__call = function(self, ...)
 		end
 	end	
 
-	for _, i in ipairs(self.opList) do									
-		i.op(_list, i)
-	end
-
-	self.lock = false	
+	local opList = self.opList
 	self.opList = {}
+	self.lock = false		
+
+	for _, op in ipairs(opList) do									
+		op()
+	end
 end
 
 function event(name, safe)

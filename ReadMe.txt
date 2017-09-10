@@ -23,6 +23,9 @@ Excel配置：https://github.com/sy-yanghuan/proton
 
 ULUA/TOLUA骏擎Unity素材商店: https://junfine.taobao.com
 
+//-------------2017-09-10-------------
+(1)更新tolua#到1.0.7.376版
+
 //-------------2017-08-22-------------
 (1)更新tolua#到1.0.7.367版
 

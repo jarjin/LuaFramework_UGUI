@@ -21,7 +21,8 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
-ULUA/TOLUA骏擎Unity素材商店: https://junfine.taobao.com
+//-------------2017-09-20-------------
+(1)LuaManager初始化加入委托初始化
 
 //-------------2017-09-10-------------
 (1)更新tolua#到1.0.7.376版

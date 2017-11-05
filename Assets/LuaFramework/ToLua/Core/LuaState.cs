@@ -579,7 +579,7 @@ namespace LuaInterface
             return LuaLoadBuffer<T>(buffer, chunkName);
         }
 
-        public void DoFile(string fileName)
+        byte[] LoadFileBuffer(string fileName)
         {
 #if UNITY_EDITOR
             if (!beStart)
@@ -596,36 +596,30 @@ namespace LuaInterface
                 throw new LuaException(error);
             }
 
+            return buffer;
+        }
+
+        string LuaChunkName(string name)
+        {
             if (LuaConst.openLuaDebugger)
             {
-                fileName = LuaFileUtils.Instance.FindFile(fileName);
+                name = LuaFileUtils.Instance.FindFile(name);
             }
 
+            return "@" + name;
+        }
+
+        public void DoFile(string fileName)
+        {
+            byte[] buffer = LoadFileBuffer(fileName);
+            fileName = LuaChunkName(fileName);
             LuaLoadBuffer(buffer, fileName);
         }
 
         public T DoFile<T>(string fileName)
         {
-#if UNITY_EDITOR
-            if (!beStart)
-            {
-                throw new LuaException("you must call Start() first to initialize LuaState");
-            }
-#endif
-            byte[] buffer = LuaFileUtils.Instance.ReadFile(fileName);
-
-            if (buffer == null)
-            {
-                string error = string.Format("cannot open {0}: No such file or directory", fileName);
-                error += LuaFileUtils.Instance.FindFileError(fileName);
-                throw new LuaException(error);
-            }
-
-            if (LuaConst.openLuaDebugger)
-            {
-                fileName = LuaFileUtils.Instance.FindFile(fileName);
-            }
-
+            byte[] buffer = LoadFileBuffer(fileName);
+            fileName = LuaChunkName(fileName);
             return LuaLoadBuffer<T>(buffer, fileName);
         }
 
@@ -1805,6 +1799,46 @@ namespace LuaInterface
 
                 LuaSetTop(oldTop);
             }
+        }
+
+        public void NewTable(string fullPath)
+        {
+            string[] path = fullPath.Split(new char[] { '.' });
+            int oldTop = LuaDLL.lua_gettop(L);
+
+            if (path.Length == 1)
+            {
+                LuaDLL.lua_newtable(L);
+                LuaDLL.lua_setglobal(L, fullPath);
+            }
+            else
+            {
+                LuaDLL.lua_getglobal(L, path[0]);
+
+                for (int i = 1; i < path.Length - 1; i++)
+                {
+                    LuaDLL.lua_pushstring(L, path[i]);
+                    LuaDLL.lua_gettable(L, -2);
+                }
+
+                LuaDLL.lua_pushstring(L, path[path.Length - 1]);
+                LuaDLL.lua_newtable(L);
+                LuaDLL.lua_settable(L, -3);
+            }
+
+            LuaDLL.lua_settop(L, oldTop);
+        }
+
+
+        public LuaTable NewTable(int narr = 0, int nrec = 0)
+        {
+            int oldTop = LuaDLL.lua_gettop(L);
+
+            LuaDLL.lua_createtable(L, 0, 0);
+            LuaTable table = ToLua.ToLuaTable(L, oldTop + 1);
+
+            LuaDLL.lua_settop(L, oldTop);
+            return table;
         }
 
         //慎用

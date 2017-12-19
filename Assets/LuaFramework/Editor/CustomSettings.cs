@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using LuaInterface;
 using LuaFramework;
+using UnityEditor;
 
 using BindType = ToLuaMenu.BindType;
 using UnityEngine.UI;
@@ -149,6 +150,7 @@ public static class CustomSettings
         _GT(typeof(BlendWeights)),           
         _GT(typeof(RenderTexture)), 
 		_GT(typeof(Resources)),      
+		_GT(typeof(LuaProfiler)),
           
         //for LuaFramework
         _GT(typeof(RectTransform)),
@@ -251,4 +253,28 @@ public static class CustomSettings
     {
         return new DelegateType(t);
     }    
+
+
+    [MenuItem("Lua/Attach Profiler", false, 151)]
+    static void AttachProfiler()
+    {
+        if (!Application.isPlaying)
+        {
+            EditorUtility.DisplayDialog("警告", "请在运行时执行此功能", "确定");
+            return;
+        }
+
+        LuaClient.Instance.AttachProfiler();
+    }
+
+    [MenuItem("Lua/Detach Profiler", false, 152)]
+    static void DetachProfiler()
+    {
+        if (!Application.isPlaying)
+        {            
+            return;
+        }
+
+        LuaClient.Instance.DetachProfiler();
+    }
 }

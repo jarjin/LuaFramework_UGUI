@@ -7,10 +7,6 @@
 
 支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)
 
-
-寻找热更新人才与项目组到“七之猫”网站 http://www.sevencat.cn/
-
-
 **资料地址**<br>
 框架文档地址 http://doc.ulua.org/
 网盘下载地址 http://pan.baidu.com/s/1nu59wzJ
@@ -20,6 +16,10 @@ tolua#地址： https://github.com/topameng/tolua
 XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
+
+//-------------2018-01-07-------------
+(1)更新tolua#到1.0.7.388版
+(2)修复AppConst.LuaByteMode = true报数据越界BUG
 
 //-------------2017-12-19-------------
 (1)更新tolua#到1.0.7.386版

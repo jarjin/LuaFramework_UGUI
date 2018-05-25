@@ -133,7 +133,9 @@ public static class ToLuaExport
         "Light.areaSize",
         "Light.lightmappingMode",
         "Light.lightmapBakeType",
-        "Security.GetChainOfTrustValue",
+		"Light.shadowAngle",
+		"Light.shadowRadius",
+		"Security.GetChainOfTrustValue",
         "Texture2D.alphaIsTransparency",
         "WWW.movie",
         "WWW.GetMovieTexture",
@@ -366,7 +368,7 @@ public static class ToLuaExport
 
             for (int i = 0; i < args.Length; i++)
             {
-                ss[i] = GetTypeStr(args[i].ParameterType);
+                ss[i] = GetTypeStr(args[i].GetType());
             }
 
             if (!ToLuaExport.IsGenericMethod(method))
@@ -625,8 +627,8 @@ public static class ToLuaExport
         }
     }
 
-    public static List<MemberInfo> memberInfoFilter = new List<MemberInfo>
-    {
+	public static List<MemberInfo> memberInfoFilter = new List<MemberInfo>
+	{
         //可精确查找一个函数
 		//Type.GetMethod(string name, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers);
     };
@@ -754,7 +756,7 @@ public static class ToLuaExport
 
         //Debugger.Log("Begin Generate lua Wrap for class {0}", className);        
         sb = new StringBuilder();
-        usingList.Add("System");                
+        usingList.Add("System");
 
         if (wrapClassName == "")
         {

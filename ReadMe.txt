@@ -3,7 +3,7 @@
 本框架工程基于Unity 5.0 + UGUI + tolua构建
 服务器端基于VS2012及其以上版本。
 
-有问题请加：ulua技术交流群 434341400 
+区块链.技术不对称社群成立！QQ群：548924854
 
 支持平台：PC/MAC/Android(armv7-a + Intel x86)/iOS(armv7 + arm64)
 
@@ -16,6 +16,9 @@ tolua#地址： https://github.com/topameng/tolua
 XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
+
+//-------------2018-05-26-------------
+(1)更新tolua#到May 21, 2018版
 
 //-------------2018-01-07-------------
 (1)更新tolua#到1.0.7.388版

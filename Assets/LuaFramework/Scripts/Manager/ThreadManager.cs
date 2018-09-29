@@ -5,6 +5,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Net;
 using System;
+using System.ComponentModel;
 
 public class ThreadEvent {
     public string Key;
@@ -102,6 +103,7 @@ namespace LuaFramework {
             using (WebClient client = new WebClient()) {
                 sw.Start();
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(ProgressFinish);
                 client.DownloadFileAsync(new System.Uri(url), currDownFile);
             }
         }
@@ -118,14 +120,15 @@ namespace LuaFramework {
             string value = string.Format("{0} kb/s", (e.BytesReceived / 1024d / sw.Elapsed.TotalSeconds).ToString("0.00"));
             NotiData data = new NotiData(NotiConst.UPDATE_PROGRESS, value);
             if (m_SyncEvent != null) m_SyncEvent(data);
-
-            if (e.ProgressPercentage == 100 && e.BytesReceived == e.TotalBytesToReceive) {
-                sw.Reset();
-
-                data = new NotiData(NotiConst.UPDATE_DOWNLOAD, currDownFile);
-                if (m_SyncEvent != null) m_SyncEvent(data);
-            }
         }
+		
+		void ProgressFinish(object sender, AsyncCompletedEventArgs e)
+        {
+			sw.Reset();
+            NotiData data = new NotiData(NotiConst.UPDATE_DOWNLOAD, currDownFile);
+            if (m_SyncEvent != null) 
+				m_SyncEvent(data);
+		}
 
         /// <summary>
         /// 调用方法

@@ -1,2 +1,2 @@
-m_EditorVersion: 5.0.0f4
-m_StandardAssetsVersion: 0
+m_EditorVersion: 2019.1.2f1
+m_EditorVersionWithRevision: 2019.1.2f1 (3e18427e571f)

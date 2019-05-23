@@ -88,7 +88,7 @@ public static class CustomSettings
         _GT(typeof(Component)),
         _GT(typeof(Transform)),
         _GT(typeof(Material)),
-        _GT(typeof(Light)),
+        //_GT(typeof(Light)),
         _GT(typeof(Rigidbody)),
         _GT(typeof(Camera)),
         _GT(typeof(AudioSource)),
@@ -113,7 +113,7 @@ public static class CustomSettings
         _GT(typeof(CameraClearFlags)),
         _GT(typeof(AudioClip)),        
         _GT(typeof(AssetBundle)),
-        _GT(typeof(ParticleSystem)),
+        //_GT(typeof(ParticleSystem)),
         _GT(typeof(AsyncOperation)).SetBaseType(typeof(System.Object)),        
         _GT(typeof(LightType)),
         _GT(typeof(SleepTimeout)),
@@ -148,9 +148,9 @@ public static class CustomSettings
         _GT(typeof(PlayMode)),
         _GT(typeof(WrapMode)),
 
-        _GT(typeof(QualitySettings)),
+        //_GT(typeof(QualitySettings)),
         _GT(typeof(RenderSettings)),                                                   
-        _GT(typeof(BlendWeights)),           
+        _GT(typeof(SkinWeights)),           
         _GT(typeof(RenderTexture)), 
 		_GT(typeof(Resources)),      
 		_GT(typeof(LuaProfiler)),
@@ -194,7 +194,7 @@ public static class CustomSettings
         typeof(AnimationClip),
         typeof(AnimationState),
 
-        typeof(BlendWeights),
+        typeof(SkinWeights),
         typeof(RenderTexture),
         typeof(Rigidbody),
     };

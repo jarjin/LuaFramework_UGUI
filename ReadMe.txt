@@ -17,6 +17,11 @@ XlsxToLua:   https://github.com/zhangqi-ulua/XlsxToLua
 UnityHello:  https://github.com/woshihuo12/UnityHello
 Excel配置：https://github.com/sy-yanghuan/proton
 
+【最新版地址，已支持Android arm64】
+最新版LuaFrameWork地址 : https://github.com/jarjin/LuaFramework_UGUI_V2
+最新版tolua_runtime地址 : https://github.com/jarjin/tolua_runtime_V2
+目前由MeniscusLight维护和更新 : https://github.com/MeniscusLight
+
 //-------------2018-05-26-------------
 (1)更新tolua#到May 21, 2018版
 

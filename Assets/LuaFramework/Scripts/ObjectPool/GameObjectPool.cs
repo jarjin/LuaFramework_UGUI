@@ -36,6 +36,10 @@ namespace LuaFramework {
 
 		//o(1)
         private void AddObjectToPool(GameObject go) {
+            if (go == null)
+            {
+                return;
+            }
 			//add to pool
             go.SetActive(false);
             availableObjStack.Push(go);
@@ -53,7 +57,10 @@ namespace LuaFramework {
 			} else {
 				Debug.LogWarning("No object available & cannot grow pool: " + poolName);
 			}
-            go.SetActive(true);
+            if (go != null)
+            {
+                go.SetActive(true);
+            }
             return go;
 		} 
 		

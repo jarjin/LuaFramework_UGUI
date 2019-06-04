@@ -262,7 +262,10 @@ namespace LuaFramework {
 
             ObjPoolManager.Release("TestGameObject", gameObj);
             var backObj = ObjPoolManager.Get("TestGameObject");
-            backObj.transform.SetParent(null);
+            if (backObj != null)
+            {
+                backObj.transform.SetParent(null);
+            }
 
             Debug.Log("TestGameObject--->>>" + backObj);
         }

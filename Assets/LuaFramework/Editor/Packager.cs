@@ -36,7 +36,7 @@ public class Packager {
 #if UNITY_5
         target = BuildTarget.iOS;
 #else
-        target = BuildTarget.iPhone;
+        target = BuildTarget.iOS;
 #endif
         BuildAssetResource(target);
     }

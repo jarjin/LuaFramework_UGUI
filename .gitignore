@@ -1,0 +1,14 @@
+Library/
+Temp/
+obj/
+Assets/LuaFramework/ToLua/Source/Generate/
+.vs/MyLuaFramework_UGUI/v15/Server/sqlite3/storage.ide-wal
+.vs/MyLuaFramework_UGUI/v15/Server/sqlite3/storage.ide-shm
+.vs/MyLuaFramework_UGUI/v15/Server/sqlite3/storage.ide
+.vs/MyLuaFramework_UGUI/v15/Server/sqlite3/db.lock
+.vs/MyLuaFramework_UGUI/v15/.suo
+Logs/Packages-Update.log
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+MyLuaFramework_UGUI.sln
+Assets/StreamingAssets/
